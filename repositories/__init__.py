@@ -1,4 +1,4 @@
-from injector import inject
+from injector import inject, Injector
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -8,4 +8,4 @@ class DbGetter:
         self.db = db
 
 
-database = DbGetter().db
+database = Injector().get(DbGetter).db

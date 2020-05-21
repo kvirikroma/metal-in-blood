@@ -15,6 +15,7 @@ class User(Base):
 
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
     login = Column(String(64), nullable=False, unique=True)
+    email = Column(String(256), nullable=False, unique=True)
     password_hash = Column(String(64), nullable=False)
     news_author_fkey = relationship("NewsPost", backref='users')
     forum_threads_author_fkey = relationship("ForumThread", backref='users')

@@ -3,7 +3,6 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from injector import Module, singleton
-from flask_injector import FlaskInjector, Injector
 from flask_jwt_extended import JWTManager
 from flask_restplus import Api
 

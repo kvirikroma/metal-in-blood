@@ -2,23 +2,25 @@ from . import database
 from models.tables import User
 
 
-def get_user(login: str):
-    return database.session.query(User).filter(User.login == login).first()
-
-
-def get_user_by_id(user_id: str):
-    return database.session.query(User).filter(User.id == user_id).first()
-
-
-def add_user(login: str, password: str):
-    new_user = User()
-    new_user.login = login
-    new_user.password_hash = password
-    database.session.add(new_user)
+def add_user(user: User) -> User:
+    database.session.add(user)
     database.session.commit()
-    return new_user
+    return user
 
 
-def delete_user(user: User):
+def delete_user(user: User) -> None:
     database.session.delete(user)
     database.session.commit()
+
+
+def search_user(login: str) -> User:
+    login = "%{}%".format(login)
+    return database.session.query(User).filter(User.login.like(login)).first()
+
+
+def get_user_by_email(email: str) -> User:
+    return database.session.query(User).filter(User.email == email).first()
+
+
+def get_user_by_id(user_id: str) -> User:
+    return database.session.query(User).filter(User.id == user_id).first()

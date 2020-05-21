@@ -112,7 +112,8 @@ ALTER TABLE public.tips OWNER TO api;
 CREATE TABLE public.users (
     id uuid DEFAULT public.uuid() NOT NULL,
     login text NOT NULL,
-    password_hash text NOT NULL
+    password_hash text NOT NULL,
+    email text NOT NULL
 );
 
 
@@ -202,6 +203,14 @@ ALTER TABLE ONLY public.tips
 
 ALTER TABLE ONLY public.tips
     ADD CONSTRAINT tips_title_key UNIQUE (title);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: api
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
 
 
 --
