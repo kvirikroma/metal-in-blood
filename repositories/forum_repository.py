@@ -28,6 +28,12 @@ def get_newest_threads(page: int, page_size: int) -> List[ForumThread]:
         limit(page_size).offset(page * page_size).all()
 
 
+def get_user_threads(user_id: str, page: int, page_size: int) -> List[ForumThread]:
+    return database.session.query(ForumThread).\
+        filter(ForumThread.author == user_id).order_by(ForumThread.date.desc()).\
+        limit(page_size).offset(page * page_size).all()
+
+
 def add_thread_message(message: ForumMessage) -> ForumMessage:
     database.session.add(message)
     database.session.commit()

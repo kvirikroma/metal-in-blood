@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from injector import Module, singleton
 from flask_jwt_extended import JWTManager
 from flask_restplus import Api
+from flask_injector import FlaskInjector
 
 from apis import api
 from frontend_bindings.pages import bind_frontend_pages
@@ -12,6 +13,24 @@ from frontend_bindings.errors import bind_error_pages
 
 app = Flask(__name__)
 app.register_blueprint(api.blueprint, url_prefix='/api/v1')
+
+
+app.config.update({
+    "SWAGGER_UI_DOC_EXPANSION": "list",
+    "RESTPLUS_VALIDATE": True,
+    "SQLALCHEMY_ECHO": False,
+    "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+    "RESTPLUS_MASK_SWAGGER": False,
+    "SECURITY_PASSWORD_HASH": "pbkdf2_sha512",
+    "JWT_ACCESS_TOKEN_EXPIRES": 600
+})
+
+if not (os.environ.get('JWT_KEY') and os.environ.get("PGPASSWORD")):
+    raise RuntimeError("Cannot find some env variables related to security")
+
+app.config['JWT_SECRET_KEY'] = app.config['SECRET_KEY'] = os.environ.get('JWT_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] =\
+    'postgresql+psycopg2://api:' + os.environ.get("PGPASSWORD") + '@/metalinblood'
 
 
 class AppModule(Module):
@@ -29,27 +48,10 @@ class AppModule(Module):
 
     def configure_jwt(self):
         jwt = JWTManager(self.app)
-        jwt._set_error_handler_callbacks(api)
         return jwt
 
 
-app.config.update({
-    "SWAGGER_UI_DOC_EXPANSION": "list",
-    "RESTPLUS_VALIDATE": True,
-    "SQLALCHEMY_ECHO": False,
-    "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-    "RESTPLUS_MASK_SWAGGER": False,
-    "SECURITY_PASSWORD_HASH": "pbkdf2_sha512"
-})
-
-if not (os.environ.get('JWT_KEY') and os.environ.get("PGPASSWORD")):
-    raise RuntimeError("Cannot find some env variables related to security")
-
-app.config['SECRET_KEY'] = os.environ.get('JWT_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'postgresql+psycopg2://api:' + os.environ.get("PGPASSWORD") + '@/metalinblood'
-
-
+FlaskInjector(app=app, modules=[AppModule(app)])
 bind_frontend_pages(app)
 bind_error_pages(app)
 

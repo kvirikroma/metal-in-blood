@@ -35,7 +35,7 @@ sign_in_model = {
 
 full_user_model = sign_up_model.copy()
 full_user_model.update({
-    "tip_id":
+    "user_id":
         fields.String(
             required=True,
             description='User unique id in database',
@@ -44,3 +44,20 @@ full_user_model.update({
             max_length=36,
         )
 })
+
+token_model = {
+    'access_token':
+        fields.String(
+            required=True,
+            description='Token to access resources',
+            example='qwerty',
+        ),
+    'refresh_token':
+        fields.String(
+            required=True,
+            description='Token to refresh access resources',
+            example='qwerty',
+        ),
+    "user_id":
+        full_user_model["user_id"]
+}

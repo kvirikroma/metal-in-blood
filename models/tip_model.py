@@ -1,5 +1,4 @@
 from flask_restplus import fields
-from .news_model import news_search_request_model
 
 tip_model = {
     "title":
@@ -14,7 +13,7 @@ tip_model = {
         fields.String(
             required=True,
             description='Text of the tip',
-            example='MetalHead1337',
+            example='The flaming crowd pleases most musicians - this shows an extremely positive reaction to the performance',
             min_length=4,
             max_length=8192
         ),
@@ -27,5 +26,3 @@ tip_model = {
             max_length=36,
         )
 }
-
-tip_search_request_model = news_search_request_model.copy()
