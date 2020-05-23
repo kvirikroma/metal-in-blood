@@ -14,3 +14,4 @@ fi
 dropdb -U api metalinblood
 createdb -U api metalinblood
 psql metalinblood -U api < ./sql/mibdb.sql
+pg_restore -U api --data-only -d metalinblood ./sql/data.pgdump

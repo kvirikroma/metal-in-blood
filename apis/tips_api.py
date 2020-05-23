@@ -23,7 +23,7 @@ tips_list = api.model(
 )
 
 
-@api.route('/')
+@api.route('')
 class Tips(Resource):
     @api.doc('tips', params={'page': 'page number'})
     @api.marshal_with(tips_list, code=200)

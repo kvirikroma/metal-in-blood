@@ -28,7 +28,7 @@ post_list = api.model(
 )
 
 
-@api.route('/')
+@api.route('')
 class Posts(Resource):
     @api.doc('newest_posts', params={'page': 'page number'})
     @api.marshal_with(post_list, code=200)
@@ -46,7 +46,7 @@ class Posts(Resource):
         """Make post in news"""
         return news_service.add_post(get_jwt_identity(), **api.payload), 201
 
-    @api.doc('delete_post', params={'post_id': 'post id'})
+    @api.doc('delete_post', params={'post_id': 'post ID'})
     @jwt_required
     def delete(self):
         """Make post in news"""

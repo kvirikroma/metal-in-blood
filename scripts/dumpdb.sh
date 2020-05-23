@@ -13,4 +13,4 @@ fi
 
 pg_dump -U api --schema-only metalinblood > ./sql/mibdb.sql
 
-pg_dump -Fc -Z0 -U api --data-only metalinblood | pxz -c -6 -T12 > ./sql/data.pgdump.xz
+pg_dump -Fc -Z0 -U api --data-only metalinblood > ./sql/data.pgdump

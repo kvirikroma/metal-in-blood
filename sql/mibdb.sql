@@ -36,7 +36,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.albums (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     author text NOT NULL,
     album_name text NOT NULL,
     picture text NOT NULL
@@ -50,10 +50,10 @@ ALTER TABLE public.albums OWNER TO api;
 --
 
 CREATE TABLE public.forum_messages (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     author uuid NOT NULL,
     body text NOT NULL,
-    date timestamp without time zone NOT NULL,
+    date timestamp without time zone DEFAULT now() NOT NULL,
     related_to uuid NOT NULL
 );
 
@@ -65,11 +65,11 @@ ALTER TABLE public.forum_messages OWNER TO api;
 --
 
 CREATE TABLE public.forum_threads (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     author uuid NOT NULL,
     title text NOT NULL,
     body text NOT NULL,
-    date timestamp without time zone NOT NULL
+    date timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -80,11 +80,11 @@ ALTER TABLE public.forum_threads OWNER TO api;
 --
 
 CREATE TABLE public.news (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     author uuid NOT NULL,
     title text NOT NULL,
     body text NOT NULL,
-    date timestamp without time zone NOT NULL,
+    date timestamp without time zone DEFAULT now() NOT NULL,
     picture text
 );
 
@@ -96,7 +96,7 @@ ALTER TABLE public.news OWNER TO api;
 --
 
 CREATE TABLE public.tips (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     title text NOT NULL,
     body text NOT NULL,
     picture text
@@ -124,7 +124,7 @@ ALTER TABLE public.users OWNER TO api;
 --
 
 CREATE TABLE public.yt_compilations (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.uuid() NOT NULL,
     link text NOT NULL,
     channel text NOT NULL,
     video_name text NOT NULL

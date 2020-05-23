@@ -1,5 +1,5 @@
 from flask_restplus import fields
-from .news_model import post_model
+from .news_model import post_full_model
 
 
 create_thread_request_model = {
@@ -23,15 +23,29 @@ create_thread_request_model = {
 
 thread_full_model = create_thread_request_model.copy()
 thread_full_model.update({
-    "author": post_model["author"],
-    "date": post_model["date"],
+    "author": post_full_model["author"],
+    "date": post_full_model["date"],
     "thread_id":
         fields.String(
             required=True,
             description='Unique id of forum thread',
             example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
-            min_length=4,
-            max_length=8192
+            min_length=36,
+            max_length=36
+        ),
+    "participants_count":
+        fields.Integer(
+            required=True,
+            description='Count of participants in the thread',
+            example=2,
+            min=0
+        ),
+    "messages_count":
+        fields.Integer(
+            required=True,
+            description='Count of messages in the thread',
+            example=3,
+            min=0
         )
 })
 
@@ -50,6 +64,14 @@ create_message_request_model = {
 
 message_full_model = create_message_request_model.copy()
 message_full_model.update({
-    "author": post_model["author"],
-    "date": post_model["date"]
+    "author": post_full_model["author"],
+    "date": post_full_model["date"],
+    "message_id":
+        fields.String(
+            required=True,
+            description='Unique id of forum message',
+            example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
+            min_length=36,
+            max_length=36
+        )
 })

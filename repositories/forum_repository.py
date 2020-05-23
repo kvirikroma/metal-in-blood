@@ -1,7 +1,13 @@
-from . import database
-from models.tables import ForumThread, ForumMessage
+from typing import List, Dict
+from os import path
+
 from sqlalchemy.sql.operators import or_
-from typing import List
+from flask import current_app, Flask
+
+from models.tables import ForumThread, ForumMessage
+from . import database
+
+current_app: Flask
 
 
 def add_forum_thread(thread: ForumThread) -> ForumThread:
@@ -26,6 +32,13 @@ def search_threads(text_to_search: str, page: int, page_size: int) -> List[Forum
 def get_newest_threads(page: int, page_size: int) -> List[ForumThread]:
     return database.session.query(ForumThread).order_by(ForumThread.date.desc()).\
         limit(page_size).offset(page * page_size).all()
+
+
+def get_newest_threads_with_info(page: int, page_size: int) -> List[Dict]:
+    with open(path.join(current_app.root_path, "sql/forum_data.sql"), 'r') as query_file:
+        query = query_file.read().format(page_size, page * page_size)
+    raw_result = database.engine.connect().execute(query)
+    return [{column: value for column, value in row_proxy.items()} for row_proxy in raw_result]
 
 
 def get_user_threads(user_id: str, page: int, page_size: int) -> List[ForumThread]:
