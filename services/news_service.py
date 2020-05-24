@@ -1,6 +1,8 @@
 from datetime import datetime
 from typing import List
 
+from flask import abort
+
 from repositories import news_repository
 from models.tables import NewsPost
 from . import default_page_size
@@ -24,9 +26,18 @@ def search_posts(page: int, text_to_search: str):
     )}
 
 
-def add_post(user_id: str, title: str, body: str, picture: str):
-    pass
+def add_post(user_id: str, title: str, body: str, picture: str = None):
+    post = NewsPost()
+    post.author = user_id
+    post.date = datetime.today()
+    post.title = title
+    post.body = body
+    post.body = picture
+    news_repository.add_post(post)
 
 
 def delete_post(user_id: str, post_id: str):
-    pass
+    post = news_repository.get_post_by_id(post_id)
+    if post.author != user_id:
+        abort(403, "You can delete only your own posts")
+    news_repository.delete_post(post)

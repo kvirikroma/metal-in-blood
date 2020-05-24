@@ -1,4 +1,7 @@
 from typing import List
+from datetime import datetime
+
+from flask import abort, jsonify, make_response
 
 from repositories import forum_repository
 from models.tables import ForumThread, ForumMessage
@@ -18,32 +21,60 @@ def prepare_messages_list(messages: List[ForumMessage]):
 
 
 def add_thread(user_id: str, title: str, body: str):
-    pass
+    if forum_repository.get_user_thread_by_title(user_id, title):
+        abort(409, "You already have thread with this title")
+    thread = ForumThread()
+    thread.author = user_id
+    thread.title = title
+    thread.body = body
+    thread.date = datetime.today()
+    forum_repository.add_forum_thread(thread)
 
 
 def delete_thread(user_id: str, thread_id: str):
-    pass
+    thread = forum_repository.get_thread_by_id(thread_id)
+    if thread.author != user_id:
+        abort(403, "You can delete only your own threads")
+    forum_repository.delete_forum_thread(thread)
 
 
 def add_message(user_id: str, related_to: str, body: str):
-    pass
+    if not forum_repository.get_thread_by_id(related_to):
+        abort(make_response(jsonify(message="Thread does not exist"), 404))
+    message = ForumMessage()
+    message.date = datetime.now()
+    message.body = body
+    message.related_to = related_to
+    message.author = user_id
+    forum_repository.add_thread_message(message)
 
 
 def delete_message(user_id: str, message_id: str):
-    pass
+    message = forum_repository.get_message_by_id(message_id)
+    if message.author != user_id:
+        abort(403, "You can delete only your own messages")
+    forum_repository.delete_thread_message(message)
 
 
 def get_threads(page: int):
-    pass
+    return {"threads": prepare_threads_list(
+        forum_repository.get_newest_threads(page, default_page_size)
+    )}
 
 
 def search_threads(page: int, text_to_search: str):
-    pass
+    return {"threads": prepare_threads_list(
+        forum_repository.search_threads(text_to_search, page, default_page_size)
+    )}
 
 
 def get_messages(page: int, thread_id: str):
-    pass
+    return {"messages": prepare_messages_list(
+        forum_repository.get_thread_messages(thread_id, page, default_page_size)
+    )}
 
 
 def search_messages(page: int, thread_id: str, text_to_search: str):
-    pass
+    return {"messages": prepare_messages_list(
+        forum_repository.search_messages(text_to_search, thread_id, page, default_page_size)
+    )}

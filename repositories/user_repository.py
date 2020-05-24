@@ -22,5 +22,9 @@ def get_user_by_email(email: str) -> User:
     return database.session.query(User).filter(User.email == email).first()
 
 
+def get_user_by_login(login: str) -> User:
+    return database.session.query(User).filter(User.login == login).first()
+
+
 def get_user_by_id(user_id: str) -> User:
     return database.session.query(User).filter(User.id == user_id).first()

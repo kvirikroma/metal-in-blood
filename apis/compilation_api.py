@@ -1,5 +1,4 @@
 from flask_restplus import Namespace, Resource
-from flask_jwt_extended import jwt_optional
 from flask import request
 
 from models.compilation_model import album_model, yt_compilation_model, fields
@@ -42,7 +41,6 @@ yt_compilations_list = api.model(
 class Albums(Resource):
     @api.doc('albums', params={'page': 'page number'})
     @api.marshal_with(albums_list, code=200)
-    @jwt_optional
     def get(self):
         """Get albums"""
         page = request.args.get("page")
@@ -54,7 +52,6 @@ class Albums(Resource):
 class SearchAlbums(Resource):
     @api.doc('search_albums', params={'page': 'page number', 'text': 'text to search'})
     @api.marshal_with(albums_list, code=200)
-    @jwt_optional
     def get(self):
         """Search albums"""
         page = request.args.get("page")
@@ -66,7 +63,6 @@ class SearchAlbums(Resource):
 class Compilations(Resource):
     @api.doc('yt_compilations', params={'page': 'page number'})
     @api.marshal_with(yt_compilations_list, code=200)
-    @jwt_optional
     def get(self):
         """Get YouTube compilations"""
         page = request.args.get("page")
@@ -78,7 +74,6 @@ class Compilations(Resource):
 class SearchCompilations(Resource):
     @api.doc('search_yt_compilations', params={'page': 'page number', 'text': 'text to search'})
     @api.marshal_with(yt_compilations_list, code=200)
-    @jwt_optional
     def get(self):
         """Search YouTube compilations"""
         page = request.args.get("page")

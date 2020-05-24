@@ -1,5 +1,5 @@
 from flask_restplus import Namespace, Resource
-from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity
+from flask_jwt_extended import jwt_refresh_token_required, get_jwt_identity, create_access_token, create_refresh_token
 
 from models.user_model import sign_up_model, full_user_model, sign_in_model, token_model
 from services import user_service
@@ -53,4 +53,9 @@ class RefreshToken(Resource):
     @jwt_refresh_token_required
     def post(self):
         """Refresh user's pair of tokens"""
-        return user_service.get_token(get_jwt_identity()), 200
+        identity = get_jwt_identity()
+        return {
+            'access_token': create_access_token(identity=identity),
+            'refresh_token': create_refresh_token(identity=identity),
+            'user_id': identity
+        }, 200

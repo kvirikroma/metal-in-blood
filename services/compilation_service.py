@@ -18,16 +18,24 @@ def prepare_compilations_list(compilations: List[YTCompilation]):
 
 
 def get_albums(page: int):
-    pass
+    return {"albums": prepare_albums_list(
+        compilation_repository.get_albums(page, default_page_size)
+    )}
 
 
 def search_albums(page: int, text_to_search: str):
-    pass
+    return {"albums": prepare_albums_list(
+        compilation_repository.search_albums(text_to_search, page, default_page_size)
+    )}
 
 
 def get_compilations(page: int):
-    pass
+    return {"compilations": prepare_compilations_list(
+        compilation_repository.get_compilations(page, default_page_size)
+    )}
 
 
 def search_compilations(page: int, text_to_search: str):
-    pass
+    return {"compilations": prepare_compilations_list(
+        compilation_repository.search_compilations(text_to_search, page, default_page_size)
+    )}
