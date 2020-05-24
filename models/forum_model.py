@@ -1,5 +1,5 @@
 from flask_restplus import fields
-from .news_model import post_full_model
+from .user_model import full_user_model
 
 
 create_thread_request_model = {
@@ -23,8 +23,15 @@ create_thread_request_model = {
 
 thread_full_model = create_thread_request_model.copy()
 thread_full_model.update({
-    "author": post_full_model["author"],
-    "date": post_full_model["date"],
+    "author": full_user_model["login"],
+    "date":
+        fields.DateTime(
+            required=True,
+            description='Date and time in iso8601 format (UTC)',
+            example='2005-08-09T18:31:42.201',
+            min_length=16,
+            max_length=32
+        ),
     "thread_id":
         fields.String(
             required=True,
@@ -33,7 +40,7 @@ thread_full_model.update({
             min_length=36,
             max_length=36
         ),
-    "participants_count":
+    "users_count":
         fields.Integer(
             required=True,
             description='Count of participants in the thread',
@@ -64,8 +71,8 @@ create_message_request_model = {
 
 message_full_model = create_message_request_model.copy()
 message_full_model.update({
-    "author": post_full_model["author"],
-    "date": post_full_model["date"],
+    "author": full_user_model["login"],
+    "date": thread_full_model["date"],
     "message_id":
         fields.String(
             required=True,

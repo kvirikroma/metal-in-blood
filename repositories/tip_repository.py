@@ -22,6 +22,6 @@ def get_tips(page: int, page_size: int) -> List[Tip]:
 def search_tips(text_to_search: str, page: int, page_size: int) -> List[Tip]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(Tip).filter(or_(
-                Tip.title.like(text_to_search),
-                Tip.body.like(text_to_search)
+                Tip.title.ilike(text_to_search),
+                Tip.body.ilike(text_to_search)
         )).limit(page_size).offset(page * page_size).all()

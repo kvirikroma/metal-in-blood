@@ -18,8 +18,8 @@ def delete_album(album: Album) -> None:
 def search_albums(text_to_search: str, page: int, page_size: int) -> List[Album]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(Album).filter(or_(
-                Album.author.like(text_to_search),
-                Album.album_name.like(text_to_search)
+                Album.author.ilike(text_to_search),
+                Album.album_name.ilike(text_to_search)
         )).limit(page_size).offset(page * page_size).all()
 
 
@@ -45,6 +45,6 @@ def get_compilations(page: int, page_size: int) -> List[YTCompilation]:
 def search_compilations(text_to_search: str, page: int, page_size: int) -> List[YTCompilation]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(YTCompilation).filter(or_(
-                YTCompilation.channel.like(text_to_search),
-                YTCompilation.video_name.like(text_to_search)
+                YTCompilation.channel.ilike(text_to_search),
+                YTCompilation.video_name.ilike(text_to_search)
         )).limit(page_size).offset(page * page_size).all()

@@ -5,7 +5,7 @@ from flask import abort, jsonify, make_response
 
 from repositories import forum_repository
 from models.tables import ForumThread, ForumMessage
-from . import default_page_size
+from . import default_page_size, check_uuid
 
 
 def prepare_threads_list(threads: List[ForumThread]):
@@ -57,9 +57,7 @@ def delete_message(user_id: str, message_id: str):
 
 
 def get_threads(page: int):
-    return {"threads": prepare_threads_list(
-        forum_repository.get_newest_threads(page, default_page_size)
-    )}
+    return {"threads": forum_repository.get_newest_threads_with_info(page, default_page_size)}
 
 
 def search_threads(page: int, text_to_search: str):
@@ -69,12 +67,14 @@ def search_threads(page: int, text_to_search: str):
 
 
 def get_messages(page: int, thread_id: str):
+    check_uuid(thread_id)
     return {"messages": prepare_messages_list(
         forum_repository.get_thread_messages(thread_id, page, default_page_size)
     )}
 
 
 def search_messages(page: int, thread_id: str, text_to_search: str):
+    check_uuid(thread_id)
     return {"messages": prepare_messages_list(
         forum_repository.search_messages(text_to_search, thread_id, page, default_page_size)
     )}

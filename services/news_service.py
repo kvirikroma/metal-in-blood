@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import List
 
-from flask import abort
+from flask import abort, jsonify, make_response
 
 from repositories import news_repository
 from models.tables import NewsPost
-from . import default_page_size
+from . import default_page_size, check_uuid
 
 
 def prepare_posts_list(posts: List[NewsPost]):
@@ -38,7 +38,10 @@ def add_post(user_id: str, title: str, body: str, picture: str = None):
 
 
 def delete_post(user_id: str, post_id: str):
+    check_uuid(post_id)
     post = news_repository.get_post_by_id(post_id)
+    if not post:
+        abort(make_response(jsonify(message="Post does not exist"), 404))
     if post.author != user_id:
         abort(403, "You can delete only your own posts")
     news_repository.delete_post(post)

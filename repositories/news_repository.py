@@ -25,8 +25,8 @@ def find_posts_by_author(author: str, page: int, page_size: int) -> List[NewsPos
 def search_posts(text_to_search: str, page: int, page_size: int) -> List[NewsPost]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(NewsPost).filter(or_(
-                NewsPost.title.like(text_to_search),
-                NewsPost.body.like(text_to_search)
+                NewsPost.title.ilike(text_to_search),
+                NewsPost.body.ilike(text_to_search)
         )).order_by(NewsPost.date.desc()).limit(page_size).offset(page * page_size).all()
 
 

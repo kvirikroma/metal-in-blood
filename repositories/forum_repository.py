@@ -1,10 +1,10 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from os import path
 
 from sqlalchemy.sql.operators import or_
 from flask import current_app, Flask
 
-from models.tables import ForumThread, ForumMessage
+from models.tables import ForumThread, ForumMessage, User
 from . import database
 
 current_app: Flask
@@ -24,8 +24,8 @@ def delete_forum_thread(thread: ForumThread) -> None:
 def search_threads(text_to_search: str, page: int, page_size: int) -> List[ForumThread]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(ForumThread).filter(or_(
-                ForumThread.title.like(text_to_search),
-                ForumThread.body.like(text_to_search)
+                ForumThread.title.ilike(text_to_search),
+                ForumThread.body.ilike(text_to_search)
         )).order_by(ForumThread.date.desc()).limit(page_size).offset(page * page_size).all()
 
 
@@ -38,7 +38,11 @@ def get_newest_threads_with_info(page: int, page_size: int) -> List[Dict]:
     with open(path.join(current_app.root_path, "sql/forum_data.sql"), 'r') as query_file:
         query = query_file.read().format(page_size, page * page_size)
     raw_result = database.engine.connect().execute(query)
-    return [{column: value for column, value in row_proxy.items()} for row_proxy in raw_result]
+    return [
+        {
+            ('thread_id' if column == 'id' else column): value for column, value in row_proxy.items()
+        } for row_proxy in raw_result
+    ]
 
 
 def get_user_threads(user_id: str, page: int, page_size: int) -> List[ForumThread]:
@@ -69,10 +73,22 @@ def delete_thread_message(message: ForumMessage) -> None:
     database.session.commit()
 
 
-def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[ForumMessage]:
+def get_raw_thread_messages(thread_id: str, page: int, page_size: int) -> List[ForumMessage]:
     return database.session.query(ForumMessage).\
         filter(ForumMessage.related_to == thread_id).order_by(ForumMessage.date.asc()).\
         limit(page_size).offset(page * page_size).all()
+
+
+def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[Tuple]:
+    result = database.session.query(ForumMessage, User.login).\
+        filter(User.id == ForumMessage.author).\
+        filter(ForumMessage.related_to == thread_id).order_by(ForumMessage.date.asc()).\
+        limit(page_size).offset(page * page_size).all()
+    for i in range(len(result)):
+        name = result[i][1]
+        result[i] = result[i][0]
+        result[i].author = name
+    return result
 
 
 def get_message_by_id(message_id: str) -> ForumMessage:
@@ -83,7 +99,7 @@ def get_message_by_id(message_id: str) -> ForumMessage:
 def search_messages(text_to_search: str, thread_id: str, page: int, page_size: int) -> List[ForumThread]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(ForumMessage).filter(or_(
-                ForumMessage.title.like(text_to_search),
-                ForumMessage.body.like(text_to_search)
+                ForumMessage.title.ilike(text_to_search),
+                ForumMessage.body.ilike(text_to_search)
         )).filter(ForumMessage.related_to == thread_id).\
         order_by(ForumMessage.date.desc()).limit(page_size).offset(page * page_size).all()

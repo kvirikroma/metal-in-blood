@@ -15,7 +15,7 @@ def delete_user(user: User) -> None:
 
 def search_user(login: str) -> User:
     login = "%{}%".format(login)
-    return database.session.query(User).filter(User.login.like(login)).first()
+    return database.session.query(User).filter(User.login.ilike(login)).first()
 
 
 def get_user_by_email(email: str) -> User:
