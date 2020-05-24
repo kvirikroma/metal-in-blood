@@ -17,7 +17,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: uuid(); Type: FUNCTION; Schema: public; Owner: api
+-- Name: uuid(); Type: FUNCTION; Schema: public; Owner: mib_api
 --
 
 CREATE FUNCTION public.uuid() RETURNS uuid
@@ -25,14 +25,14 @@ CREATE FUNCTION public.uuid() RETURNS uuid
     AS $$SELECT uuid_in(md5(random()::text)::cstring)$$;
 
 
-ALTER FUNCTION public.uuid() OWNER TO api;
+ALTER FUNCTION public.uuid() OWNER TO mib_api;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: albums; Type: TABLE; Schema: public; Owner: api
+-- Name: albums; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.albums (
@@ -43,10 +43,10 @@ CREATE TABLE public.albums (
 );
 
 
-ALTER TABLE public.albums OWNER TO api;
+ALTER TABLE public.albums OWNER TO mib_api;
 
 --
--- Name: forum_messages; Type: TABLE; Schema: public; Owner: api
+-- Name: forum_messages; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.forum_messages (
@@ -58,10 +58,10 @@ CREATE TABLE public.forum_messages (
 );
 
 
-ALTER TABLE public.forum_messages OWNER TO api;
+ALTER TABLE public.forum_messages OWNER TO mib_api;
 
 --
--- Name: forum_threads; Type: TABLE; Schema: public; Owner: api
+-- Name: forum_threads; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.forum_threads (
@@ -73,10 +73,10 @@ CREATE TABLE public.forum_threads (
 );
 
 
-ALTER TABLE public.forum_threads OWNER TO api;
+ALTER TABLE public.forum_threads OWNER TO mib_api;
 
 --
--- Name: news; Type: TABLE; Schema: public; Owner: api
+-- Name: news; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.news (
@@ -89,10 +89,10 @@ CREATE TABLE public.news (
 );
 
 
-ALTER TABLE public.news OWNER TO api;
+ALTER TABLE public.news OWNER TO mib_api;
 
 --
--- Name: tips; Type: TABLE; Schema: public; Owner: api
+-- Name: tips; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.tips (
@@ -103,10 +103,10 @@ CREATE TABLE public.tips (
 );
 
 
-ALTER TABLE public.tips OWNER TO api;
+ALTER TABLE public.tips OWNER TO mib_api;
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: api
+-- Name: users; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.users (
@@ -117,10 +117,10 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO api;
+ALTER TABLE public.users OWNER TO mib_api;
 
 --
--- Name: yt_compilations; Type: TABLE; Schema: public; Owner: api
+-- Name: yt_compilations; Type: TABLE; Schema: public; Owner: mib_api
 --
 
 CREATE TABLE public.yt_compilations (
@@ -131,10 +131,10 @@ CREATE TABLE public.yt_compilations (
 );
 
 
-ALTER TABLE public.yt_compilations OWNER TO api;
+ALTER TABLE public.yt_compilations OWNER TO mib_api;
 
 --
--- Name: albums albums_author_album_name_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: albums albums_author_album_name_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.albums
@@ -142,7 +142,7 @@ ALTER TABLE ONLY public.albums
 
 
 --
--- Name: albums albums_picture_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: albums albums_picture_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.albums
@@ -150,7 +150,7 @@ ALTER TABLE ONLY public.albums
 
 
 --
--- Name: albums albums_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: albums albums_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.albums
@@ -158,7 +158,7 @@ ALTER TABLE ONLY public.albums
 
 
 --
--- Name: forum_messages forum_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_messages forum_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_messages
@@ -166,7 +166,7 @@ ALTER TABLE ONLY public.forum_messages
 
 
 --
--- Name: forum_threads forum_threads_author_title_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_threads forum_threads_author_title_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_threads
@@ -174,7 +174,7 @@ ALTER TABLE ONLY public.forum_threads
 
 
 --
--- Name: forum_threads forum_threads_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_threads forum_threads_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_threads
@@ -182,7 +182,7 @@ ALTER TABLE ONLY public.forum_threads
 
 
 --
--- Name: news news_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: news news_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.news
@@ -190,7 +190,7 @@ ALTER TABLE ONLY public.news
 
 
 --
--- Name: tips tips_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: tips tips_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.tips
@@ -198,7 +198,7 @@ ALTER TABLE ONLY public.tips
 
 
 --
--- Name: tips tips_title_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: tips tips_title_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.tips
@@ -206,7 +206,7 @@ ALTER TABLE ONLY public.tips
 
 
 --
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.users
@@ -214,7 +214,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_login_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: users users_login_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.users
@@ -222,7 +222,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.users
@@ -230,7 +230,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: yt_compilations yt_compilations_channel_video_name_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: yt_compilations yt_compilations_channel_video_name_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.yt_compilations
@@ -238,7 +238,7 @@ ALTER TABLE ONLY public.yt_compilations
 
 
 --
--- Name: yt_compilations yt_compilations_link_key; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: yt_compilations yt_compilations_link_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.yt_compilations
@@ -246,7 +246,7 @@ ALTER TABLE ONLY public.yt_compilations
 
 
 --
--- Name: yt_compilations yt_compilations_pkey; Type: CONSTRAINT; Schema: public; Owner: api
+-- Name: yt_compilations yt_compilations_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.yt_compilations
@@ -254,35 +254,35 @@ ALTER TABLE ONLY public.yt_compilations
 
 
 --
--- Name: forum_messages_related_to_idx; Type: INDEX; Schema: public; Owner: api
+-- Name: forum_messages_related_to_idx; Type: INDEX; Schema: public; Owner: mib_api
 --
 
 CREATE INDEX forum_messages_related_to_idx ON public.forum_messages USING btree (related_to);
 
 
 --
--- Name: forum_threads_title_body_idx; Type: INDEX; Schema: public; Owner: api
+-- Name: forum_threads_title_body_idx; Type: INDEX; Schema: public; Owner: mib_api
 --
 
 CREATE INDEX forum_threads_title_body_idx ON public.forum_threads USING btree (title, body);
 
 
 --
--- Name: news_title_date_author_body_idx; Type: INDEX; Schema: public; Owner: api
+-- Name: news_title_date_author_body_idx; Type: INDEX; Schema: public; Owner: mib_api
 --
 
 CREATE INDEX news_title_date_author_body_idx ON public.news USING btree (title, date, author, body);
 
 
 --
--- Name: tips_title_body_idx; Type: INDEX; Schema: public; Owner: api
+-- Name: tips_title_body_idx; Type: INDEX; Schema: public; Owner: mib_api
 --
 
 CREATE INDEX tips_title_body_idx ON public.tips USING btree (title, body);
 
 
 --
--- Name: forum_messages forum_messages_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_messages forum_messages_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_messages
@@ -290,7 +290,7 @@ ALTER TABLE ONLY public.forum_messages
 
 
 --
--- Name: forum_messages forum_messages_related_to_fkey; Type: FK CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_messages forum_messages_related_to_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_messages
@@ -298,7 +298,7 @@ ALTER TABLE ONLY public.forum_messages
 
 
 --
--- Name: forum_threads forum_threads_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: api
+-- Name: forum_threads forum_threads_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.forum_threads
@@ -306,7 +306,7 @@ ALTER TABLE ONLY public.forum_threads
 
 
 --
--- Name: news news_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: api
+-- Name: news news_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mib_api
 --
 
 ALTER TABLE ONLY public.news

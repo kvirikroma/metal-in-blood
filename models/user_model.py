@@ -16,7 +16,7 @@ sign_up_model = {
             description='Unique username to find user by it',
             example='MetalHead1337',
             min_length=3,
-            max_length=64
+            max_length=32
         ),
     "password":
         fields.String(

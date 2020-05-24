@@ -55,9 +55,8 @@ class Threads(Resource):
     @api.marshal_with(threads_list, code=200)
     def get(self):
         """Get forum threads"""
-        page = request.args.get("page")
-        check_page(page)
-        return forum_service.get_threads(int(page)), 200
+        page = check_page(request)
+        return forum_service.get_threads(page), 200
 
     @api.doc('add_forum_thread', security='apikey')
     @api.expect(create_thread, validate=True)
@@ -79,9 +78,8 @@ class SearchThreads(Resource):
     @api.marshal_with(threads_list, code=200)
     def get(self):
         """Search forum threads"""
-        page = request.args.get("page")
-        check_page(page)
-        return forum_service.search_threads(int(page), request.args.get("text")), 200
+        page = check_page(request)
+        return forum_service.search_threads(page, request.args.get("text")), 200
 
 
 @api.route('/messages')
@@ -90,9 +88,8 @@ class ForumMessages(Resource):
     @api.marshal_with(messages_list, code=200)
     def get(self):
         """Get forum thread messages"""
-        page = request.args.get("page")
-        check_page(page)
-        return forum_service.get_messages(int(page), request.args.get("id")), 200
+        page = check_page(request)
+        return forum_service.get_messages(page, request.args.get("id")), 200
 
     @api.doc('add_forum_message', security='apikey')
     @api.expect(create_message, validate=True)
@@ -114,6 +111,5 @@ class SearchForumMessages(Resource):
     @api.marshal_with(threads_list, code=200)
     def get(self):
         """Search messages in forum thread"""
-        page = request.args.get("page")
-        check_page(page)
-        return forum_service.search_messages(int(page), request.args.get("thread_id"), request.args.get("text")), 200
+        page = check_page(request)
+        return forum_service.search_messages(page, request.args.get("thread_id"), request.args.get("text")), 200

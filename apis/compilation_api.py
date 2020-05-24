@@ -43,9 +43,8 @@ class Albums(Resource):
     @api.marshal_with(albums_list, code=200)
     def get(self):
         """Get albums"""
-        page = request.args.get("page")
-        check_page(page)
-        return compilation_service.get_albums(int(page)), 200
+        page = check_page(request)
+        return compilation_service.get_albums(page), 200
 
 
 @api.route('/albums/search')
@@ -54,9 +53,8 @@ class SearchAlbums(Resource):
     @api.marshal_with(albums_list, code=200)
     def get(self):
         """Search albums"""
-        page = request.args.get("page")
-        check_page(page)
-        return compilation_service.search_albums(int(page), request.args.get("text")), 200
+        page = check_page(request)
+        return compilation_service.search_albums(page, request.args.get("text")), 200
 
 
 @api.route('/yt')
@@ -65,9 +63,8 @@ class Compilations(Resource):
     @api.marshal_with(yt_compilations_list, code=200)
     def get(self):
         """Get YouTube compilations"""
-        page = request.args.get("page")
-        check_page(page)
-        return compilation_service.get_compilations(int(page)), 200
+        page = check_page(request)
+        return compilation_service.get_compilations(page), 200
 
 
 @api.route('/yt/search')
@@ -76,6 +73,5 @@ class SearchCompilations(Resource):
     @api.marshal_with(yt_compilations_list, code=200)
     def get(self):
         """Search YouTube compilations"""
-        page = request.args.get("page")
-        check_page(page)
-        return compilation_service.search_compilations(int(page), request.args.get("text")), 200
+        page = check_page(request)
+        return compilation_service.search_compilations(page, request.args.get("text")), 200

@@ -11,11 +11,11 @@ if [ -z ${PGPASSWORD+x} ]; then
     read -s PGPASSWORD
 fi
 
-pg_dump -Fc -Z0 --data-only -U api metalinblood > ./mibdb_data.pgdump
+pg_dump -Fc -Z0 --data-only -U mib_api metalinblood > ./mibdb_data.pgdump
 
-dropdb -U api metalinblood
-createdb -U api metalinblood
-psql metalinblood -U api < ./sql/mibdb.sql
+dropdb -U mib_api metalinblood
+createdb -U mib_api metalinblood
+psql metalinblood -U mib_api < ./sql/mibdb.sql
 
-pg_restore -U api --data-only -d metalinblood ./sql/wkdb_data.pgdump
+pg_restore -U mib_api --data-only -d metalinblood ./sql/wkdb_data.pgdump
 rm -f ./wkdb_data.pgdump

@@ -28,9 +28,8 @@ class Tips(Resource):
     @api.marshal_with(tips_list, code=200)
     def get(self):
         """Get tips"""
-        page = request.args.get("page")
-        check_page(page)
-        return tip_service.get_tips(int(page)), 200
+        page = check_page(request)
+        return tip_service.get_tips(page), 200
 
 
 @api.route('/search')
@@ -39,6 +38,5 @@ class Tips(Resource):
     @api.marshal_with(tips_list, code=200)
     def get(self):
         """Search tips"""
-        page = request.args.get("page")
-        check_page(page)
-        return tip_service.search_tips(int(page), request.args.get("text")), 200
+        page = check_page(request)
+        return tip_service.search_tips(page, request.args.get("text")), 200

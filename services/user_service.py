@@ -44,7 +44,7 @@ def register_user(email: str, login: str, password: str):
     user = User()
     user.email = email
     user.login = login
-    user.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(12))
+    user.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(12)).decode()
     user_repository.add_user(user)
 
 
@@ -55,7 +55,7 @@ def get_token(login: str, password: str):
     if not bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
         abort(401, "Invalid credentials given")
     return {
-        'access_token': create_access_token(identity=user.id),
-        'refresh_token': create_refresh_token(identity=user.id),
+        "access_token": create_access_token(identity=user.id),
+        "refresh_token": create_refresh_token(identity=user.id),
         "user_id": user.id
     }

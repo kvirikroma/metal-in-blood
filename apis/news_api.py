@@ -34,9 +34,8 @@ class Posts(Resource):
     @api.marshal_with(post_list, code=200)
     def get(self):
         """Get newest posts"""
-        page = request.args.get("page")
-        check_page(page)
-        return news_service.get_newest_posts(int(page)), 200
+        page = check_page(request)
+        return news_service.get_newest_posts(page), 200
 
     @api.doc('make_new_post', security='apikey')
     @api.expect(add_news_post, validate=True)
@@ -58,6 +57,5 @@ class SearchPosts(Resource):
     @api.marshal_with(post_list, code=200)
     def get(self):
         """Search posts"""
-        page = request.args.get("page")
-        check_page(page)
-        return news_service.search_posts(int(page), request.args.get("text")), 200
+        page = check_page(request)
+        return news_service.search_posts(page, request.args.get("text")), 200

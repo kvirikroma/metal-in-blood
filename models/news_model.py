@@ -23,7 +23,7 @@ post_request_model = {
             required=False,
             description='Link to the picture',
             example='https://i.imgur.com/69khNTK.jpg',
-            pattern=r'\h\t\t\p\S+\/\/\S+\.\S+',
+            pattern=r'http\S+//\S+\.\S+',
             min_length=4,
             max_length=512
         )

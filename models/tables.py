@@ -14,7 +14,7 @@ class User(Base):
         return self.login
 
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
-    login = Column(String(64), nullable=False, unique=True)
+    login = Column(String(32), nullable=False, unique=True)
     email = Column(String(256), nullable=False, unique=True)
     password_hash = Column(String(64), nullable=False)
     news_author_fkey = relationship("NewsPost", backref='users')
@@ -88,7 +88,7 @@ class ForumThread(Base):
     body = Column(String(8192), nullable=False)
     date = Column(DateTime, nullable=False)
     forum_threads_author_title_key = UniqueConstraint('author', 'title', name='forum_threads_author_title_key')
-    forum_threads_title_body_idx = Index('forum_threads_title_body_idx', title, body)
+    forum_threads_title_body_idx = Index('forum_threads_title_body_date_idx', title, body, date)
     forum_messages_related_to_fkey = relationship("ForumMessage", backref='forum_threads')
 
 

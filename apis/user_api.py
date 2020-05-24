@@ -48,7 +48,7 @@ class SignIn(Resource):
 
 @api.route('/refresh')
 class RefreshToken(Resource):
-    @api.doc('refresh_token')
+    @api.doc('refresh_token', security='apikey')
     @api.marshal_with(token, code=200)
     @jwt_refresh_token_required
     def post(self):
