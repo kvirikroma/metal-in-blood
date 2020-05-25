@@ -54,12 +54,13 @@ class Threads(Resource):
     @api.doc('forum_threads', params={'page': 'page number'})
     @api.marshal_with(threads_list, code=200)
     def get(self):
-        """Get forum threads"""
+        """Get newest forum threads"""
         page = check_page(request)
         return forum_service.get_threads(page), 200
 
     @api.doc('add_forum_thread', security='apikey')
     @api.expect(create_thread, validate=True)
+    @api.marshal_with(thread, code=201)
     @jwt_required
     def post(self):
         """Create forum thread"""
@@ -108,7 +109,7 @@ class ForumMessages(Resource):
 @api.route('/messages/search')
 class SearchForumMessages(Resource):
     @api.doc('search_forum_messages', params={'page': 'page number', 'text': 'text to search', 'thread_id': 'thread ID'})
-    @api.marshal_with(threads_list, code=200)
+    @api.marshal_with(messages_list, code=200)
     def get(self):
         """Search messages in forum thread"""
         page = check_page(request)

@@ -35,6 +35,7 @@ def get_newest_threads(page: int, page_size: int) -> List[ForumThread]:
 
 
 def get_newest_threads_with_info(page: int, page_size: int) -> List[Dict]:
+    database.session.rollback()
     with open(path.join(current_app.root_path, "sql/forum_data.sql"), 'r') as query_file:
         query = query_file.read().format(page_size, page * page_size)
     raw_result = database.engine.connect().execute(query)
@@ -54,7 +55,7 @@ def get_user_threads(user_id: str, page: int, page_size: int) -> List[ForumThrea
 def get_user_thread_by_title(user_id: str, title: str) -> ForumThread:
     return database.session.query(ForumThread).\
         filter(ForumThread.author == user_id).\
-        friler(ForumThread.title == title).first()
+        filter(ForumThread.title == title).first()
 
 
 def get_thread_by_id(thread_id: str) -> ForumThread:
@@ -79,15 +80,15 @@ def get_raw_thread_messages(thread_id: str, page: int, page_size: int) -> List[F
         limit(page_size).offset(page * page_size).all()
 
 
-def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[Tuple]:
+def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[ForumMessage]:
     result = database.session.query(ForumMessage, User.login).\
         filter(User.id == ForumMessage.author).\
         filter(ForumMessage.related_to == thread_id).order_by(ForumMessage.date.asc()).\
         limit(page_size).offset(page * page_size).all()
     for i in range(len(result)):
         name = result[i][1]
-        result[i] = result[i][0]
-        result[i].author = name
+        result[i] = result[i][0].__dict__
+        result[i]['author'] = name
     return result
 
 
@@ -98,8 +99,7 @@ def get_message_by_id(message_id: str) -> ForumMessage:
 
 def search_messages(text_to_search: str, thread_id: str, page: int, page_size: int) -> List[ForumThread]:
     text_to_search = "%{}%".format(text_to_search)
-    return database.session.query(ForumMessage).filter(or_(
-                ForumMessage.title.ilike(text_to_search),
-                ForumMessage.body.ilike(text_to_search)
-        )).filter(ForumMessage.related_to == thread_id).\
+    return database.session.query(ForumMessage).\
+        filter(ForumMessage.related_to == thread_id).\
+        filter(ForumMessage.body.ilike(text_to_search)).\
         order_by(ForumMessage.date.desc()).limit(page_size).offset(page * page_size).all()

@@ -14,9 +14,12 @@ def prepare_threads_list(threads: List[ForumThread]):
     return threads
 
 
-def prepare_messages_list(messages: List[ForumMessage]):
+def prepare_messages_list(messages: List[ForumMessage or dict]):
     for message in messages:
-        message.message_id = message.id
+        if isinstance(message, dict):
+            message['message_id'] = message['id']
+        else:
+            message.message_id = message.id
     return messages
 
 
@@ -29,16 +32,24 @@ def add_thread(user_id: str, title: str, body: str):
     thread.body = body
     thread.date = datetime.today()
     forum_repository.add_forum_thread(thread)
+    thread.thread_id = thread.id
+    thread.messages_count = 0
+    thread.users_count = 0
+    return thread
 
 
 def delete_thread(user_id: str, thread_id: str):
+    check_uuid(thread_id)
     thread = forum_repository.get_thread_by_id(thread_id)
+    if not thread:
+        abort(make_response(jsonify(message="Thread does not exist"), 404))
     if thread.author != user_id:
         abort(403, "You can delete only your own threads")
     forum_repository.delete_forum_thread(thread)
 
 
 def add_message(user_id: str, related_to: str, body: str):
+    check_uuid(related_to)
     if not forum_repository.get_thread_by_id(related_to):
         abort(make_response(jsonify(message="Thread does not exist"), 404))
     message = ForumMessage()
@@ -50,7 +61,10 @@ def add_message(user_id: str, related_to: str, body: str):
 
 
 def delete_message(user_id: str, message_id: str):
+    check_uuid(message_id)
     message = forum_repository.get_message_by_id(message_id)
+    if not message:
+        abort(make_response(jsonify(message="Message does not exist"), 404))
     if message.author != user_id:
         abort(403, "You can delete only your own messages")
     forum_repository.delete_thread_message(message)

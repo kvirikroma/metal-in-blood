@@ -15,7 +15,6 @@ def prepare_posts_list(posts: List[NewsPost]):
 
 
 def get_newest_posts(page: int):
-    print(news_repository.get_newest_posts(page, default_page_size))
     return {"posts": prepare_posts_list(
         news_repository.get_newest_posts(page, default_page_size)
     )}

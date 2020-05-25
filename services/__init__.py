@@ -23,3 +23,5 @@ def check_uuid(value: str):
         return True
     except ValueError:
         abort(make_response(jsonify(message="Incorrect id parameter (must match UUID v4)"), 400))
+    except TypeError:
+        abort(make_response(jsonify(message="Cannot find id parameter of correct type (must appear once in query)"), 400))
