@@ -1,7 +1,9 @@
+from typing import List
+
+from sqlalchemy.sql.operators import or_
+
 from . import database
 from models.tables import Tip
-from sqlalchemy.sql.operators import or_
-from typing import List
 
 
 def add_tip(tip: Tip) -> Tip:

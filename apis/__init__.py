@@ -19,10 +19,10 @@ authorization = {
 
 api = Api(
     api_bp,
-    title='Metal_In_Blood API',
+    title='Metal In Blood API',
     version='0.1',
     doc='/',
-    description='Metal_In_Blood API <style>.models {display: none !important}</style>',
+    description='Metal In Blood API <style>.models {display: none !important}</style>',
     authorizations=authorization
 )
 

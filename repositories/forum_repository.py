@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from os import path
 
 from sqlalchemy.sql.operators import or_
