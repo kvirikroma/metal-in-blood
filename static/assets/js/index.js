@@ -14,9 +14,6 @@ function controller() { // определяем на какой странице
         drawUser(document.body);
         addListenerOnMenu();
     }
-    if(current_url == 'tips.html') {
-        connect();
-    }
 }
 controller();
 
@@ -99,43 +96,7 @@ function addListenerOnMenu() {
     
 }
 
-// function drawTips(data) {
-//     console.log(data);
-//     const wrapper = document.querySelector('.main.tips .main__content');
 
-//     data = JSON.parse(data);
-//     data.forEach(post => {
-//         const pattern = `
-//         <article class="main__content-item">
-//             <div class="main__content-item__text">
-//                 <h3>${post.title}</h3>
-//                 <p>${post.text}</p>
-//             </div>
-//             <div class="main__content-item__img">
-//                 <img src="${post.img}" alt="">
-//             </div>
-//         </article>
-//         `;
-
-//         wrapper.innerHTML += pattern;
-//     })
-// }
-
-function connect(to = "tips") {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'static/assets/js/tips_db.json');
-    xhr.send();
-    xhr.addEventListener('readystatechange', () => {
-    if (xhr.status === 200 && xhr.readyState == 4) {
-        switch(to) {
-            case 'tips':
-                drawTips(xhr.response)
-                return true;
-                break
-        }
-    } else return;
-    });
-}
 
 
 function drawUser(body) {
