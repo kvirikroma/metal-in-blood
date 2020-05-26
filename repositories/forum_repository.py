@@ -5,7 +5,7 @@ from sqlalchemy.sql.operators import or_
 from flask import current_app, Flask
 
 from models.tables import ForumThread, ForumMessage, User
-from . import database
+from . import database, parse_raw_join_result
 
 current_app: Flask
 
@@ -80,16 +80,12 @@ def get_raw_thread_messages(thread_id: str, page: int, page_size: int) -> List[F
         limit(page_size).offset(page * page_size).all()
 
 
-def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[ForumMessage]:
+def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[Dict]:
     result = database.session.query(ForumMessage, User.login).\
         filter(User.id == ForumMessage.author).\
         filter(ForumMessage.related_to == thread_id).order_by(ForumMessage.date.asc()).\
         limit(page_size).offset(page * page_size).all()
-    for i in range(len(result)):
-        name = result[i][1]
-        result[i] = result[i][0].__dict__
-        result[i]['author'] = name
-    return result
+    return parse_raw_join_result(result)
 
 
 def get_message_by_id(message_id: str) -> ForumMessage:

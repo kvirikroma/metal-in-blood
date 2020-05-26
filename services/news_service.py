@@ -10,7 +10,10 @@ from . import default_page_size, check_uuid
 
 def prepare_posts_list(posts: List[NewsPost]):
     for post in posts:
-        post.post_id = post.id
+        if isinstance(post, dict):
+            post['post_id'] = post['id']
+        else:
+            post.post_id = post.id
     return posts
 
 

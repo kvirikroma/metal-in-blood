@@ -34,7 +34,7 @@ post_full_model = {
     "title": post_request_model["title"],
     "body": post_request_model["body"],
     "author":
-        full_user_model["user_id"],
+        full_user_model["login"],
     "date":
         fields.Date(
             required=True,
