@@ -1,35 +1,27 @@
-let users = JSON.parse(localStorage.getItem('users'));
-if (users) {
-    null;
-} else {
-    localStorage.setItem('users', JSON.stringify(data));
-    users = JSON.parse(localStorage.getItem('users'));
-
-}
-function sendToStorage() {
-    // const xhr = new XMLHttpRequest();
-    // xhr.open('GET', 'static/assets/js/users_db.json');
-    // xhr.send();
-    // xhr.addEventListener('readystatechange', () => {
-    // if (xhr.status === 200 && xhr.readyState == 4) {
-    //     localStorage.setItem('users', xhr.response)
-    // } else return;
-    // });
-}
 
 function formatData(data) {
     return JSON.stringify(data)
 }
 
-function registration(login, password) {
-    const data = users;
-    data.push({
-        login: login,
-        password: password    
-    });
-    localStorage.setItem('users', JSON.stringify(data));
-    location.href = localStorage.getItem('global') + 'signin.html'
+function registration(email, login, password) {
 
+    const info = {
+        email,
+        login,
+        password
+    }
+
+            postData('http://0.0.0.0:5000/api/v1/user/signup', info)
+              .then((data) => {
+                alert('Registration success'); // JSON data parsed by `response.json()` call
+                 location.href = 'http://0.0.0.0:5000/signin.html';
+                
+
+
+            }).catch((data) => {
+                console.error(data);
+                console.trace();
+            });
 }
 
 (function() {
@@ -38,22 +30,18 @@ function registration(login, password) {
         e.preventDefault();
         const config = [form.login.value, form.mail.value, form.pass.value, form.repeat_pass.value];
         if(validateForm(...config)) {
-            alert('success');
-            registration(form.login.value, form.mail.value, form.pass.value);
+            console.info('Validation passed');
+            registration(form.mail.value, form.login.value, form.pass.value);
         } else {
-            alert('Smth wrong...')
+            console.info('Validation failed');
         }
         
     })
 })();
 
 function validateForm(login, email, password1, password2) {
-    const data = users;
-    let success = false;
     if (password1 === password2 && password1.length >= 6) {
-        const filtered = data.filter(user => user.login == login || user.email == email);
-        filtered.length == 0 ? success = true : success = false
+        return true
     }
-    return success;
+    return false;
 }
-sendToStorage();

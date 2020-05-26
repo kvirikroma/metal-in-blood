@@ -1,14 +1,5 @@
 
 
-let users = JSON.parse(localStorage.getItem('users'));
-if (users) {
-    null;
-} else {
-    localStorage.setItem('users', JSON.stringify(data));
-    users = JSON.parse(localStorage.getItem('users'));
-
-}
-
 // Динамическое изменение страницы
 function controller() { // определяем на какой странице находится пользователь
     const url = location.href;
@@ -44,7 +35,7 @@ function drawMenuButton(body) {
 }
 
 function drawMenu(body) {
-    const user = JSON.parse(localStorage.getItem('current_user'));
+    const user = sessionStorage.getItem('current_user');
 
     const menu = 
     `
@@ -52,7 +43,7 @@ function drawMenu(body) {
         <div class="menu__controls">
             <div>
                 <div class="menu__controls-language"><img src="static/metal-in-blood/lang.png" alt="" class="menu-img"> Select language...</div>
-                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr">${user ? (user.login + ', ' + '  ' + ' <a href="#" id="logout"> exit</a>') : ' <a href="signin.html">Login</a>'}</span></div>
+                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr">${isLogged() ? user + ', ' + '  ' + ' <a href="#" id="logout"> exit</a>' : ' <a href="signin.html">Login</a>'}</span></div>
             </div>
             <div class="menu__controls-arrow"><img src="static/metal-in-blood/arrows.png" alt="" class="menu-img"></div>
         </div>
@@ -108,27 +99,27 @@ function addListenerOnMenu() {
     
 }
 
-function drawTips(data) {
-    console.log(data);
-    const wrapper = document.querySelector('.main.tips .main__content');
+// function drawTips(data) {
+//     console.log(data);
+//     const wrapper = document.querySelector('.main.tips .main__content');
 
-    data = JSON.parse(data);
-    data.forEach(post => {
-        const pattern = `
-        <article class="main__content-item">
-            <div class="main__content-item__text">
-                <h3>${post.title}</h3>
-                <p>${post.text}</p>
-            </div>
-            <div class="main__content-item__img">
-                <img src="${post.img}" alt="">
-            </div>
-        </article>
-        `;
+//     data = JSON.parse(data);
+//     data.forEach(post => {
+//         const pattern = `
+//         <article class="main__content-item">
+//             <div class="main__content-item__text">
+//                 <h3>${post.title}</h3>
+//                 <p>${post.text}</p>
+//             </div>
+//             <div class="main__content-item__img">
+//                 <img src="${post.img}" alt="">
+//             </div>
+//         </article>
+//         `;
 
-        wrapper.innerHTML += pattern;
-    })
-}
+//         wrapper.innerHTML += pattern;
+//     })
+// }
 
 function connect(to = "tips") {
     const xhr = new XMLHttpRequest();
@@ -155,3 +146,6 @@ function drawUser(body) {
 
     user ? body.innerHTML += pattern : null;
 }
+
+
+
