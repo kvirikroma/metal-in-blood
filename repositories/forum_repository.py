@@ -2,6 +2,7 @@ from typing import List, Dict
 from os import path
 
 from sqlalchemy.sql.operators import or_
+from sqlalchemy import func, distinct
 from flask import current_app, Flask
 
 from models.tables import ForumThread, ForumMessage, User
@@ -21,17 +22,38 @@ def delete_forum_thread(thread: ForumThread) -> None:
     database.session.commit()
 
 
-def search_threads(text_to_search: str, page: int, page_size: int) -> List[ForumThread]:
+def search_threads(text_to_search: str, page: int, page_size: int) -> List[Dict]:
     text_to_search = "%{}%".format(text_to_search)
-    return database.session.query(ForumThread).filter(or_(
+
+    count_request = database.session.query(
+        func.count("*"),
+        func.count(distinct(ForumMessage.author)),
+        ForumMessage.related_to
+    ).group_by(ForumMessage.related_to).subquery()
+
+    result = database.session.query(ForumThread, User.login, count_request).\
+        filter(count_request.c.related_to == ForumThread.id).\
+        filter(User.id == ForumThread.author).\
+        filter(or_(
                 ForumThread.title.ilike(text_to_search),
                 ForumThread.body.ilike(text_to_search)
         )).order_by(ForumThread.date.desc()).limit(page_size).offset(page * page_size).all()
 
+    for i in range(len(result)):
+        thread, author, messages, people, thread_id = result[i]
+        thread = thread.__dict__
+        thread['author'], thread['messages_count'], thread['users_count'] = author, messages, people
+        result[i] = thread
 
-def get_newest_threads(page: int, page_size: int) -> List[ForumThread]:
-    return database.session.query(ForumThread).order_by(ForumThread.date.desc()).\
+    return result
+
+
+def get_newest_threads(page: int, page_size: int) -> List[Dict]:
+    result = database.session.query(ForumThread, User.login).\
+        filter(User.id == ForumThread.author).\
+        order_by(ForumThread.date.desc()).\
         limit(page_size).offset(page * page_size).all()
+    return parse_raw_join_result(result)
 
 
 def get_newest_threads_with_info(page: int, page_size: int) -> List[Dict]:
@@ -48,7 +70,8 @@ def get_newest_threads_with_info(page: int, page_size: int) -> List[Dict]:
 
 def get_user_threads(user_id: str, page: int, page_size: int) -> List[ForumThread]:
     return database.session.query(ForumThread).\
-        filter(ForumThread.author == user_id).order_by(ForumThread.date.desc()).\
+        filter(ForumThread.author == user_id).\
+        order_by(ForumThread.date.desc()).\
         limit(page_size).offset(page * page_size).all()
 
 
@@ -93,9 +116,11 @@ def get_message_by_id(message_id: str) -> ForumMessage:
         filter(ForumMessage.id == message_id).first()
 
 
-def search_messages(text_to_search: str, thread_id: str, page: int, page_size: int) -> List[ForumThread]:
+def search_messages(text_to_search: str, thread_id: str, page: int, page_size: int) -> List[Dict]:
     text_to_search = "%{}%".format(text_to_search)
-    return database.session.query(ForumMessage).\
+    result = database.session.query(ForumMessage, User.login).\
+        filter(User.id == ForumMessage.author).\
         filter(ForumMessage.related_to == thread_id).\
         filter(ForumMessage.body.ilike(text_to_search)).\
         order_by(ForumMessage.date.desc()).limit(page_size).offset(page * page_size).all()
+    return parse_raw_join_result(result)

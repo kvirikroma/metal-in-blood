@@ -10,7 +10,10 @@ from . import default_page_size, check_uuid
 
 def prepare_threads_list(threads: List[ForumThread]):
     for thread in threads:
-        thread.thread_id = thread.id
+        if isinstance(thread, dict):
+            thread['thread_id'] = thread['id']
+        else:
+            thread.thread_id = thread.id
     return threads
 
 

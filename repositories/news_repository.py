@@ -26,12 +26,15 @@ def find_posts_by_author(author: str, page: int, page_size: int) -> List[Dict]:
     return parse_raw_join_result(result)
 
 
-def search_posts(text_to_search: str, page: int, page_size: int) -> List[NewsPost]:
+def search_posts(text_to_search: str, page: int, page_size: int) -> List[Dict]:
     text_to_search = "%{}%".format(text_to_search)
-    return database.session.query(NewsPost).filter(or_(
+    result = database.session.query(NewsPost, User).\
+        filter(User.id == NewsPost.author).\
+        filter(or_(
                 NewsPost.title.ilike(text_to_search),
                 NewsPost.body.ilike(text_to_search)
         )).order_by(NewsPost.date.desc()).limit(page_size).offset(page * page_size).all()
+    return parse_raw_join_result(result)
 
 
 def get_newest_posts(page: int, page_size: int) -> List[Dict]:
