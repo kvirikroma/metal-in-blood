@@ -31,19 +31,23 @@ def search_threads(text_to_search: str, page: int, page_size: int) -> List[Dict]
         ForumMessage.related_to
     ).group_by(ForumMessage.related_to).subquery()
 
-    result = database.session.query(ForumThread, User.login, count_request).\
-        filter(count_request.c.related_to == ForumThread.id).\
+    raw_result = database.session.query(ForumThread, User.login, count_request).\
+        outerjoin(count_request, count_request.c.related_to == ForumThread.id).\
         filter(User.id == ForumThread.author).\
         filter(or_(
                 ForumThread.title.ilike(text_to_search),
                 ForumThread.body.ilike(text_to_search)
         )).order_by(ForumThread.date.desc()).limit(page_size).offset(page * page_size).all()
 
-    for i in range(len(result)):
-        thread, author, messages, people, thread_id = result[i]
+    result = []
+    for thread, author, messages, people, thread_id in raw_result:
         thread = thread.__dict__
-        thread['author'], thread['messages_count'], thread['users_count'] = author, messages, people
-        result[i] = thread
+        thread['author'], thread['messages_count'], thread['users_count'] = (
+            author,
+            messages if messages else 0,
+            people if people else 0
+        )
+        result.append(thread)
 
     return result
 
