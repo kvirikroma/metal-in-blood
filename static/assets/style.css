@@ -139,6 +139,7 @@ body {
     width: 100%;
     text-align: center;
     padding-top: 23px;
+    position: relative;
 }
 .main__heading {
     font-family: "Metal", sans-serif;
@@ -191,6 +192,21 @@ body {
     background: #2D2D2D;
     border-radius: 10px;
     margin-bottom: 20px;
+    position: relative;
+}
+.main__article .del{
+    content: 'Delete';
+    position: absolute;
+    top:20px;
+    right:20px;
+    z-index: -1;
+    cursor: pointer;
+}
+.main__article .del:hover{
+    text-decoration: underline;
+}
+.main__article:hover > .del{
+    z-index: 10;
 }
 .article__info {
     display: flex;
@@ -392,12 +408,14 @@ body {
     background-position: center;
 }
 .forum__item-comments div {
-    background-image: url(../metal-in-blood/admin.png);
-    width: 29px;
+    background-image: url(../metal-in-blood/mail.png);
+    width: 23px;
     height: 27px;
-    background-size: cover;
+    background-size: contain;
+    margin-right:4px;
     background-position: center;
 }
+
 
 .main__content.comments .article__main .article__text p{
     font-size: 20px;
@@ -603,10 +621,65 @@ form input {
     box-sizing: border-box;
     background-color: #a1ff004d;
     color: #fff;
+    width: 100%;
 }
 .search button {
     display: none;
     position: absolute;
     margin-left: 10px;
     margin-top: 2px;
+}
+.main__content-inner {
+    width: 100%
+}
+.add-new {
+    cursor: pointer;
+    color: #adff0c;
+    font-size: 16px;
+    margin: 20px 0;
+}
+.add-new__form input,
+.add-new__form textarea {
+    min-height: 35px;
+    outline: 0;
+    border:1px solid #adff0c;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.add-new__form label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.add-new__form label span{
+    width:30%;
+}
+.add-new__form label input{
+    width:70%;
+    color: #000;
+}
+.add-new__form textarea{
+    width:100%;
+    height: 150px
+}
+.add-new__form button{
+    width:100px;
+    height:35px;
+}
+.add-new__form {
+    display:none
+}
+.add-new__form.active {
+    display: block
+}
+.forum .main__inner {
+    display: flex;
+    flex-direction: column;
+}
+.forum .main__content {
+    margin-bottom: 20px
+    flex-direction:column-reverse;
+}
+.nobody {
+    margin-top: 15px;
 }

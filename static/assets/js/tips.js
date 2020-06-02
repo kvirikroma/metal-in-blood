@@ -23,6 +23,7 @@ function drawTips(data) {
 function renderDefault() {
 	postData('http://0.0.0.0:5000/api/v1/tips?page=1', {}, 'GET')
               .then((data) => {
+              	
                 console.log(data); // JSON data parsed by `response.json()` call
                 drawTips(data.tips);
 

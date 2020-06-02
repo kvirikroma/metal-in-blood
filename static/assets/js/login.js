@@ -1,5 +1,3 @@
-
-
 if (isLogged()) {
     const user = sessionStorage.getItem('current_user');
     document.querySelector('.mainSignIn__dialog').innerHTML = `<h1>${user}, do you want <a href="#">logout</a>?</h1>`
@@ -17,18 +15,18 @@ function authorization(login, password) {
             password
         }
 
-            postData('http://0.0.0.0:5000/api/v1/user/signin', info)
-              .then((data) => {
-                console.log(data); // JSON data parsed by `response.json()` call
-                 
-                
+        postData('http://0.0.0.0:5000/api/v1/user/signin', info)
+            .then((data) => {
+                console.log(data);
 
-                if(data.access_token) {
+                if (data.access_token) {
                     document.cookie = `token=${data.access_token}`;
+                    document.cookie = `refreshToken=${data.refresh_token}`;
                     sessionStorage.setItem('current_user', info.login)
                     location.href = 'http://0.0.0.0:5000/';
                 } else {
                     document.cookie = `token=null`;
+                    alert(data.message);
                 }
                 console.log(document.cookie); // JSON data parsed by `response.json()` call
 
@@ -36,8 +34,7 @@ function authorization(login, password) {
                 console.error(data);
                 console.trace();
             });
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e);
     }
 }
@@ -51,8 +48,3 @@ function authorization(login, password) {
 })();
 
 const main_url = 'http://0.0.0.0:5000';
-
-
-
-
-

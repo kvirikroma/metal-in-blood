@@ -8,7 +8,7 @@
     <title>Forum | Metal in blood</title>
 </head>
 <body>
-    <main class="main">
+    <main class="main forum">
         <div class="wrapper">
             
             <div class="main__inner">
@@ -20,57 +20,26 @@
                 </div>
                 <div class="main__content">
                     <!-- <h1 class="main__heading">Metal in blood</h1> -->
-                    <a class="forum__item" href="comments.html">
-                        <div class="forum__item-text">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam cumque sed tempora, explicabo laborum doloribus?</p>
-                        </div>
-                        <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>128</div>
-                            <div class="forum__item-comments"><div></div>256</div>
-                        </div>
-                    </a>
-                    <a class="forum__item" href="comments.html">
-                        <div class="forum__item-text">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam cumque sed tempora, explicabo laborum doloribus?</p>
-                        </div>
-                        <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>128</div>
-                            <div class="forum__item-comments"><div></div>256</div>
-                        </div>
-                    </a>
-                    <a class="forum__item" href="comments.html">
-                        <div class="forum__item-text">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam cumque sed tempora, explicabo laborum doloribus?</p>
-                        </div>
-                        <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>128</div>
-                            <div class="forum__item-comments"><div></div>256</div>
-                        </div>
-                    </a>
-                    <a class="forum__item" href="comments.html">
-                        <div class="forum__item-text">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam cumque sed tempora, explicabo laborum doloribus?</p>
-                        </div>
-                        <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>128</div>
-                            <div class="forum__item-comments"><div></div>256</div>
-                        </div>
-                    </a>
-                    <a class="forum__item" href="comments.html">
-                        <div class="forum__item-text">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam cumque sed tempora, explicabo laborum doloribus?</p>
-                        </div>
-                        <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>128</div>
-                            <div class="forum__item-comments"><div></div>256</div>
-                        </div>
-                    </a>
+                    
                 </div>
+                <p class="add-new">Добавить тред</p>
+                    <form class="add-new__form">
+                        <label>
+                            <span>Название треда</span> 
+                            <input type="text" name="heading" placeholder="Type heading here">
+                        </label>
+                        <label>
+                            <span>Текст треда</span>
+                            <input type="text" name="body" placeholder="Enter thread text here">
+                        </label>
+                        <button>Add thread</button>
+                    </form>
             </div>
         </div>
     </main>
     
     <script src="static/assets/js/data.js"></script>
     <script src="static/assets/js/index.js"></script>
+    <script src="static/assets/js/forum.js"></script>
 </body>
 </html>

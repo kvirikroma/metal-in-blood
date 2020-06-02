@@ -1,5 +1,3 @@
-
-
 // Динамическое изменение страницы
 function controller() { // определяем на какой странице находится пользователь
     const url = location.href;
@@ -8,7 +6,7 @@ function controller() { // определяем на какой странице
     localStorage.setItem('global', global_url)
     let current_url = url.slice(url.lastIndexOf('/') + 1, url.length);
     current_url = current_url.indexOf('#') == -1 ? current_url : current_url.slice(0, current_url.length - 1);
-    if(current_url !== main_url) {
+    if (current_url !== main_url) {
         drawMenuButton(document.body);
         drawMenu(document.body);
         drawUser(document.body);
@@ -28,14 +26,14 @@ function drawMenuButton(body) {
     `;
 
     body.innerHTML += btn;
-    
+
 }
 
 function drawMenu(body) {
     const user = sessionStorage.getItem('current_user');
 
-    const menu = 
-    `
+    const menu =
+        `
     <div id="menu">
         <div class="menu__controls">
             <div>
@@ -86,14 +84,14 @@ function addListenerOnMenu() {
         menu.classList.toggle('active');
         console.log('work')
     }));
-    if(document.querySelector('#logout')) {
+    if (document.querySelector('#logout')) {
         document.querySelector('#logout').onclick = () => {
-            localStorage.removeItem('current_user', JSON.stringify({}));
+            logOut()
             document.querySelector('#wr').innerHTML = ' <a href="signin.html">Login</a>';
             document.querySelector('#hello').remove();
         }
     }
-    
+
 }
 
 
@@ -107,6 +105,3 @@ function drawUser(body) {
 
     user ? body.innerHTML += pattern : null;
 }
-
-
-

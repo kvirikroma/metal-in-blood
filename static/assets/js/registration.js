@@ -1,4 +1,3 @@
-
 function formatData(data) {
     return JSON.stringify(data)
 }
@@ -11,17 +10,20 @@ function registration(email, login, password) {
         password
     }
 
-            postData('http://0.0.0.0:5000/api/v1/user/signup', info)
-              .then((data) => {
+    postData('http://0.0.0.0:5000/api/v1/user/signup', info)
+        .then((data) => {
+            console.log(data)
+
+            if (data == null) {
                 alert('Registration success'); // JSON data parsed by `response.json()` call
-                 location.href = 'http://0.0.0.0:5000/signin.html';
-                
-
-
-            }).catch((data) => {
-                console.error(data);
-                console.trace();
-            });
+                location.href = 'http://0.0.0.0:5000/signin.html';
+            } else {
+                alert(data.message)
+            }
+        }).catch((data) => {
+            console.error(data);
+            console.trace();
+        });
 }
 
 (function() {
@@ -29,13 +31,13 @@ function registration(email, login, password) {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const config = [form.login.value, form.mail.value, form.pass.value, form.repeat_pass.value];
-        if(validateForm(...config)) {
+        if (validateForm(...config)) {
             console.info('Validation passed');
             registration(form.mail.value, form.login.value, form.pass.value);
         } else {
             console.info('Validation failed');
         }
-        
+
     })
 })();
 
