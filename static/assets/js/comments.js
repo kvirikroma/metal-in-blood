@@ -19,15 +19,16 @@ function getParams() {
 
 function renderCommets(data) {
 	const parent = document.querySelector('.comments .comment__main');
-
+	parent.innerHTML = null;
     data.forEach(comment => {
         const pattern = `
-                    <div class="comment__item">
+                    <div class="comment__item" data-author="${comment.author}" data-id="${comment.message_id}">
                             <p>${comment.body}</p>
                             <div class="comment__info">
                                 <div class="username">${comment.author}</div>
                                 <p class="date">${timeConverter(comment.date)}</p>
                             </div>
+                            <p class="comment-del">Delete</p>
                         </div>
         `;
         parent.innerHTML += pattern;
@@ -36,8 +37,16 @@ function renderCommets(data) {
     	const pattern = '<h4 class="nobody">Nobody comment this.</h4>';
     	parent.innerHTML += pattern;
     } else {
-    	document.querySelector('.nobody').remove();
+    	if(document.querySelector('.nobody')) document.querySelector('.nobody').remove();
     }
+
+    const items = parent.querySelectorAll('.comment__item');
+    const currentSession = sessionStorage.getItem('current_user'); 
+    items.forEach(comment => {
+    	if(comment.getAttribute('data-author') === currentSession) {
+    		comment.classList.add('active');
+    	}
+    })
 }
 
 
@@ -139,3 +148,23 @@ function addNew(body) {
             console.trace();
         });
 }
+
+const main__content = document.querySelector('.comment__main');
+
+main__content.addEventListener('click', (e) => {
+    if(e.target.classList.contains('comment-del')) {
+        const parent = e.target.offsetParent;
+        const data_author = parent.getAttribute('data-author');
+        const data_id = parent.getAttribute('data-id');
+
+        console.log(parent, data_id, data_author)
+        // postData(`http://0.0.0.0:5000/api/v1/news?post_id=${data_id}`, {}, 'POST')
+        //     .then((data) => {
+        //         console.log(data);
+        //         renderDefault();
+        //     }).catch((data) => {
+        //         console.error(data);
+        //         console.trace();
+        //     });
+    }
+});

@@ -683,3 +683,19 @@ form input {
 .nobody {
     margin-top: 15px;
 }
+.comment__item {
+    position: relative;
+}
+.comment__item .comment-del {
+    position: absolute;
+    top:20px;
+    right: 20px;
+    cursor: pointer;
+    display: none;
+}
+.comment__item .comment-del:hover {
+    text-decoration: underline;
+}
+.comment__item.active:hover .comment-del {
+    display: block;
+}

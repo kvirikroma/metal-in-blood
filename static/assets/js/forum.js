@@ -19,7 +19,7 @@ addFormTrigger.addEventListener('click', function() {
 function renderThread(data) {
 const parent = document.querySelector('.forum .main__content');
 let threads =  [];
-    
+    parent.innerHTML = null;
     if(!Array.isArray(data)) {
         threads.push(data);
     } else {
@@ -33,8 +33,8 @@ console.log(threads, data)
                             <p>${thread.title}</p>
                         </div>
                         <div class="forum__item-info">
-                            <div class="forum__item-views"><div></div>${thread.messages_count}</div>
-                            <div class="forum__item-comments"><div></div>${thread.users_count}</div>
+                            <div class="forum__item-views"><div></div>${thread.users_count}</div>
+                            <div class="forum__item-comments"><div></div>${thread.messages_count}</div>
                         </div>
                     </a>
         `;
@@ -71,3 +71,26 @@ function renderDefaultThread() {
         });
 }
 renderDefaultThread();
+
+const input = document.querySelector('.main__inner .search input');
+const btn = document.querySelector('.btn');
+
+input.addEventListener('input', function() {
+    if (input.value.length !== 0) {
+        btn.style.display = 'inline-block'
+    } else {
+        btn.style.display = 'none';
+        renderDefaultThread();
+    }
+});
+
+btn.addEventListener('click', () => {
+    postData(`http://0.0.0.0:5000/api/v1/forum/threads/search?page=1&text=${input.value}`, {}, 'GET')
+        .then((data) => {
+            console.log(data);
+            renderThread(data.threads)
+        }).catch((data) => {
+            console.error(data);
+            console.trace();
+        });
+});
