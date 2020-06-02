@@ -158,13 +158,13 @@ main__content.addEventListener('click', (e) => {
         const data_id = parent.getAttribute('data-id');
 
         console.log(parent, data_id, data_author)
-        // postData(`http://0.0.0.0:5000/api/v1/news?post_id=${data_id}`, {}, 'POST')
-        //     .then((data) => {
-        //         console.log(data);
-        //         renderDefault();
-        //     }).catch((data) => {
-        //         console.error(data);
-        //         console.trace();
-        //     });
+        postData(`http://0.0.0.0:5000/api/v1/forum/messages?id=${data_id}`, {}, 'DELETE')
+            .then((data) => {
+                console.log(data);
+                renderDefaultComms();
+            }).catch((data) => {
+                console.error(data);
+                console.trace();
+            });
     }
 });

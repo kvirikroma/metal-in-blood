@@ -106,7 +106,7 @@ main__content.addEventListener('click', (e) => {
         const data_id = parent.getAttribute('data-id');
 
 
-        postData(`http://0.0.0.0:5000/api/v1/news?post_id=${data_id}`, {}, 'POST')
+        postData(`http://0.0.0.0:5000/api/v1/news?post_id=${data_id}`, {}, 'DELETE')
             .then((data) => {
                 console.log(data);
                 renderDefault();
