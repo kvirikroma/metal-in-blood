@@ -68,7 +68,7 @@ input1.addEventListener('input', function() {
         btn1.style.display = 'inline-block'
     } else {
         btn1.style.display = 'none';
-        renderDefault();
+        renderDefaultAlbums();
     }
 });
 
@@ -91,12 +91,12 @@ input.addEventListener('input', function() {
         btn.style.display = 'inline-block'
     } else {
         btn.style.display = 'none';
-        renderDefault();
+        renderDefaultComp();
     }
 });
 
 btn.addEventListener('click', () => {
-    postData(`http://0.0.0.0:5000/api/v1/news/search?page=1&text=${input.value}`, {}, 'GET')
+    postData(`http://0.0.0.0:5000/api/v1/compilations/yt/search?page=1&text=${input.value}`, {}, 'GET')
         .then((data) => {
             console.log(data);
             renderComp(data.compilations)

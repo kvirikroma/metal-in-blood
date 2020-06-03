@@ -29,11 +29,12 @@ async function postData(url = '', data = {}, method = 'POST') {
     const response = await fetch(url, config);
     console.log(response.status);
 
-    if (response.status >= 400) {
+    if (response.status == 401) {
     console.log(response.status);
+        refreshToken();
+        return postData(url, data, method);
+    } else if(response.status > 401){
         showError(response.status, response)
-        // refreshToken();
-        // return postData(url, data, method);
     } else {
         return await response.json() // parses JSON response into native JavaScript objects
     }
