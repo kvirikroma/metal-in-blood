@@ -28,7 +28,7 @@ let threads =  [];
 console.log(threads, data)
     threads.forEach(thread => {
         const pattern = `
-                    <a class="forum__item" href="comments.html?page=1&id=${thread.thread_id}">
+                    <div class="forum__item" data-author="${thread.author}" data-id="${thread.thread_id}" data-href="comments.html?page=1&id=${thread.thread_id}">
                         <div class="forum__item-text">
                             <p>${thread.title}</p>
                         </div>
@@ -36,12 +36,50 @@ console.log(threads, data)
                             <div class="forum__item-views"><div></div>${thread.users_count}</div>
                             <div class="forum__item-comments"><div></div>${thread.messages_count}</div>
                         </div>
-                    </a>
+                        <p class="comment-del"><img src="https://icons.iconarchive.com/icons/graphicloads/android-settings/256/cross-icon.png" width="20"></p>
+                    </div>
         `;
         parent.innerHTML += pattern;
     });
 
+    const items = parent.querySelectorAll('.forum__item');
+    const currentSession = sessionStorage.getItem('current_user'); 
+    items.forEach(comment => {
+        if(comment.getAttribute('data-author') === currentSession) {
+            comment.classList.add('active');
+        }
+    });
 }
+
+const items = document.querySelector('.main__content');
+items.addEventListener('click', (e) => {
+    let current = e.target;
+    if(!current.classList.contains('forum__item')) {
+        current = current.offsetParent;
+    }
+
+    // console.log(e.target,current.offsetParent, current, e.target.classList)
+    if(current.classList.contains('forum__item')) {
+        console.log('http://0.0.0.0:5000/' + current.getAttribute('data-href'))
+        window.location.href = 'http://0.0.0.0:5000/' + current.getAttribute('data-href');
+    }
+    else if(e.target.offsetParent.classList.contains('comment-del')) {
+        const parent = e.target.offsetParent.offsetParent;
+        const data_author = parent.getAttribute('data-author');
+        const data_id = parent.getAttribute('data-id');
+
+        console.log(e.target.offsetParent)
+        postData(`http://0.0.0.0:5000/api/v1/forum/threads?id=${data_id}`, {}, 'DELETE')
+            .then((data) => {
+                console.log(data);
+                renderDefaultThread();
+            }).catch((data) => {
+                console.error(data);
+                console.trace();
+            });
+    }
+});
+    
 
 function addNew(title, body) {
     const send = {
@@ -52,7 +90,7 @@ function addNew(title, body) {
     postData(`http://0.0.0.0:5000/api/v1/forum/threads`, send, 'POST')
         .then((data) => {
             console.log(data);
-            renderThread(data);
+            renderDefaultThread();
         }).catch((data) => {
             console.error(data);
             console.trace();
@@ -93,4 +131,11 @@ btn.addEventListener('click', () => {
             console.error(data);
             console.trace();
         });
+});
+
+
+const main__content = document.querySelector('.main__content');
+
+main__content.addEventListener('click', (e) => {
+    
 });

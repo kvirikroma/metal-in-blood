@@ -85,7 +85,7 @@ function renderThread(data) {
                             </div>
                         </div>
         `;
-        parent.innerHTML += pattern;
+        parent.innerHTML = pattern;
 }
 function renderDefaultThread() {
     postData('http://0.0.0.0:5000/api/v1/forum/threads?page=1', {}, 'GET')

@@ -686,16 +686,26 @@ form input {
 .comment__item {
     position: relative;
 }
-.comment__item .comment-del {
+.comment__item .comment-del,
+.forum__item .comment-del {
     position: absolute;
     top:20px;
     right: 20px;
     cursor: pointer;
     display: none;
 }
-.comment__item .comment-del:hover {
+.comment__item .comment-del:hover,
+.forum__item .comment-del:hover  {
     text-decoration: underline;
 }
-.comment__item.active:hover .comment-del {
+.comment__item.active:hover .comment-del,
+.forum__item.active:hover .comment-del {
     display: block;
+}
+.load {
+    width:40px;
+}
+.forum__item {
+    position: relative;
+    cursor: pointer;
 }
