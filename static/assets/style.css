@@ -709,3 +709,7 @@ form input {
     position: relative;
     cursor: pointer;
 }
+.comp .search {
+    /*display: flex;*/
+    margin-bottom: 20px
+}
