@@ -52,5 +52,5 @@ bind_error_pages(app)
 
 
 if __name__ == "__main__":
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] *= 32
+    #app.config["JWT_ACCESS_TOKEN_EXPIRES"] *= 32
     app.run(debug=True, host='0.0.0.0', port=5000)
