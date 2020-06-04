@@ -8,6 +8,7 @@ from . import default_page_size
 def prepare_albums_list(albums: List[Album]):
     for album in albums:
         album.album_id = album.id
+        album.title = album.album_name
     return albums
 
 

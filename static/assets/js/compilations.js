@@ -5,7 +5,7 @@ parent.innerHTML = null;
     data.forEach(album => {
         const pattern = `
                     <div class="main__item">
-                        <div><p>${album.author}</p></div>
+                        <div><p>${album.author} - ${album.title}</p></div>
                          <img src="${album.picture}" alt="">
                     </div>
         `;
