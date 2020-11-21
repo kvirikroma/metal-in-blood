@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 11.8 (Ubuntu 11.8-1.pgdg18.04+1)
--- Dumped by pg_dump version 11.8 (Ubuntu 11.8-1.pgdg18.04+1)
+-- Dumped from database version 11.10 (Ubuntu 11.10-1.pgdg18.04+1)
+-- Dumped by pg_dump version 11.10 (Ubuntu 11.10-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -113,7 +113,12 @@ CREATE TABLE public.users (
     id uuid DEFAULT public.uuid() NOT NULL,
     login text NOT NULL,
     password_hash text NOT NULL,
-    email text NOT NULL
+    email text NOT NULL,
+    admin boolean DEFAULT false NOT NULL,
+    change_tips boolean DEFAULT false NOT NULL,
+    change_news boolean DEFAULT false NOT NULL,
+    change_compilations boolean DEFAULT false NOT NULL,
+    language smallint DEFAULT 0 NOT NULL
 );
 
 

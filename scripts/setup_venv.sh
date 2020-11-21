@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ $PWD == *"scripts"* ]]
-then
+export start_pwd=$PWD
+while [[ $PWD == *"scripts"* ]]; do
     cd ..
-fi
+done
 
 if [ -d ./.venv ]; then
     export answer
@@ -34,3 +34,5 @@ pip3 install wheel &&\
 #apt-get install -y postgresql-server-dev-all &&\
 pip3 install -r ./requirements.txt &&\
 deactivate
+
+cd $start_pwd

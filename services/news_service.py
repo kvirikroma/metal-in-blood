@@ -4,7 +4,7 @@ from typing import List
 from flask import abort, jsonify, make_response
 
 from repositories import news_repository
-from models.tables import NewsPost
+from repositories.tables import NewsPost
 from . import default_page_size, check_uuid
 
 

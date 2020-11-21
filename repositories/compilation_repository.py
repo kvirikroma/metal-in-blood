@@ -3,7 +3,7 @@ from typing import List
 from sqlalchemy.sql.operators import or_
 
 from . import database
-from models.tables import YTCompilation, Album
+from repositories.tables import YTCompilation, Album
 
 
 def add_album(album: Album) -> Album:

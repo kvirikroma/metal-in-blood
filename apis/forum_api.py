@@ -60,6 +60,7 @@ class Threads(Resource):
 
     @api.doc('add_forum_thread', security='apikey')
     @api.expect(create_thread, validate=True)
+    @api.response(409, "User already has a thread with this title")
     @api.marshal_with(thread, code=201)
     @jwt_required
     def post(self):
@@ -67,6 +68,8 @@ class Threads(Resource):
         return forum_service.add_thread(get_jwt_identity(), **api.payload), 201
 
     @api.doc('delete_forum_thread', params={'id': 'thread ID'}, security='apikey')
+    @api.response(403, "Tried to remove thread of other user")
+    @api.response(201, "Success")
     @jwt_required
     def delete(self):
         """Delete forum thread"""
@@ -94,12 +97,17 @@ class ForumMessages(Resource):
 
     @api.doc('add_forum_message', security='apikey')
     @api.expect(create_message, validate=True)
+    @api.response(404, "Thread does not exist")
+    @api.response(201, "Success")
     @jwt_required
     def post(self):
         """Create message in forum thread"""
         return forum_service.add_message(get_jwt_identity(), **api.payload), 201
 
     @api.doc('delete_forum_message', params={'id': 'message ID'}, security='apikey')
+    @api.response(404, "Message does not exist")
+    @api.response(403, "Tried to remove message of other user")
+    @api.response(201, "Success")
     @jwt_required
     def delete(self):
         """Delete message from forum thread"""

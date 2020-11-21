@@ -1,5 +1,5 @@
 from . import database
-from models.tables import User
+from repositories.tables import User
 
 
 def add_user(user: User) -> User:

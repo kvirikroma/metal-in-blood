@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import abort, jsonify, make_response
 
 from repositories import forum_repository
-from models.tables import ForumThread, ForumMessage
+from repositories.tables import ForumThread, ForumMessage
 from . import default_page_size, check_uuid
 
 

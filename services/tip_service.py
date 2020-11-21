@@ -1,7 +1,7 @@
 from typing import List
 
 from repositories import tip_repository
-from models.tables import Tip
+from repositories.tables import Tip
 from . import default_page_size
 
 

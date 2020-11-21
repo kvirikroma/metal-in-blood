@@ -1,11 +1,15 @@
 #!/bin/bash
 
-if [[ $PWD == *"scripts"* ]]
-then
+export start_pwd=$PWD
+while [[ $PWD == *"scripts"* ]]; do
     cd ..
-fi
+done
 
 source ./.venv/bin/activate
 source ./scripts/auxiliary/prepare_launch.sh
 
-python3 ./server.py
+if $(password_check); then
+    python3 ./server.py
+fi
+
+cd $start_pwd

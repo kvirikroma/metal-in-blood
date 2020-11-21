@@ -39,12 +39,15 @@ class Posts(Resource):
 
     @api.doc('make_new_post', security='apikey')
     @api.expect(add_news_post, validate=True)
+    @api.response(201, "Success")
     @jwt_required
     def post(self):
         """Make post in news"""
         return news_service.add_post(get_jwt_identity(), **api.payload), 201
 
     @api.doc('delete_post', params={'post_id': 'post ID'}, security='apikey')
+    @api.response(201, "Success")
+    @api.response(201, "Tried to remove post of other user")
     @jwt_required
     def delete(self):
         """Delete post from news"""

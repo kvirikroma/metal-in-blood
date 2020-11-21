@@ -3,12 +3,10 @@ from os import path
 
 from sqlalchemy.sql.operators import or_
 from sqlalchemy import func, distinct
-from flask import current_app, Flask
+from flask import current_app
 
-from models.tables import ForumThread, ForumMessage, User
+from repositories.tables import ForumThread, ForumMessage, User
 from . import database, parse_raw_join_result
-
-current_app: Flask
 
 
 def add_forum_thread(thread: ForumThread) -> ForumThread:

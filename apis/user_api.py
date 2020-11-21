@@ -30,6 +30,8 @@ token = api.model(
 @api.route('/signup')
 class SignUp(Resource):
     @api.doc('sign_up')
+    @api.response(201, "Success")
+    @api.response(409, "Username or email exists")
     @api.expect(sign_up, validate=True)
     def post(self):
         """Create an account"""
@@ -40,6 +42,8 @@ class SignUp(Resource):
 class SignIn(Resource):
     @api.doc('sign_in')
     @api.expect(sign_in, validate=True)
+    @api.response(401, "Invalid credentials given")
+    @api.response(404, "User not found")
     @api.marshal_with(token, code=200)
     def post(self):
         """Log into an account"""

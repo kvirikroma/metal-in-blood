@@ -2,6 +2,7 @@ from uuid import UUID
 
 from flask import abort, make_response, jsonify
 
+
 default_page_size = 20
 
 

@@ -1,7 +1,7 @@
 from typing import List
 
 from repositories import compilation_repository
-from models.tables import Album, YTCompilation
+from repositories.tables import Album, YTCompilation
 from . import default_page_size
 
 
