@@ -4,7 +4,7 @@ from flask import abort
 
 from repositories import tip_repository, user_repository
 from repositories.tables import Tip
-from . import default_page_size
+from . import default_page_size, check_uuid
 
 
 def prepare_tips_list(tips: List[Tip]):
@@ -37,6 +37,7 @@ def add_tip(user_id: str, title: str, body: str, picture: str, **kwargs) -> Tip:
 
 
 def delete_tip(user_id: str, tip_id: str) -> None:
+    check_uuid(tip_id)
     user = user_repository.get_user_by_id(user_id)
     if not user or not (user.admin or user.change_tips):
         abort(403, "You don't have a permission to remove tips")
