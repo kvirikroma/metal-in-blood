@@ -17,6 +17,11 @@ def delete_album(album: Album) -> None:
     database.session.commit()
 
 
+def delete_album_by_id(album_id: str) -> None:
+    database.session.query(Album).filter(Album.id == album_id).delete()
+    database.session.commit()
+
+
 def search_albums(text_to_search: str, page: int, page_size: int) -> List[Album]:
     text_to_search = "%{}%".format(text_to_search)
     return database.session.query(Album).filter(or_(
@@ -37,6 +42,11 @@ def add_compilation(compilation: YTCompilation) -> YTCompilation:
 
 def delete_compilation(compilation: YTCompilation) -> None:
     database.session.delete(compilation)
+    database.session.commit()
+
+
+def delete_compilation_by_id(compilation_id: str) -> None:
+    database.session.query(YTCompilation).filter(YTCompilation.id == compilation_id).delete()
     database.session.commit()
 
 

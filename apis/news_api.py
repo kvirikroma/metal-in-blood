@@ -1,9 +1,11 @@
-from flask_restplus import Namespace, Resource
+from flask_restplus.namespace import Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 
-from models.news_model import post_full_model, post_request_model, fields
 from services import news_service, check_page
+from .utils import OptionsResource
+from models.news_model import post_full_model, post_request_model, fields
+
 
 api = Namespace('news', description='News related operations')
 
@@ -29,7 +31,7 @@ post_list = api.model(
 
 
 @api.route('')
-class Posts(Resource):
+class Posts(OptionsResource):
     @api.doc('newest_posts', params={'page': 'page number'})
     @api.marshal_with(post_list, code=200)
     def get(self):
@@ -40,6 +42,7 @@ class Posts(Resource):
     @api.doc('make_new_post', security='apikey')
     @api.expect(add_news_post, validate=True)
     @api.response(201, "Success")
+    @api.response(403, "Cannot add a post (don't have a permission)")
     @jwt_required
     def post(self):
         """Make post in news"""
@@ -55,7 +58,7 @@ class Posts(Resource):
 
 
 @api.route('/search')
-class SearchPosts(Resource):
+class SearchPosts(OptionsResource):
     @api.doc('search_posts', params={'page': 'page number', 'text': 'text to search'})
     @api.marshal_with(post_list, code=200)
     def get(self):

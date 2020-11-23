@@ -3,12 +3,12 @@ from datetime import datetime
 
 from flask import abort, jsonify, make_response
 
-from repositories import forum_repository
+from repositories import forum_repository, user_repository
 from repositories.tables import ForumThread, ForumMessage
 from . import default_page_size, check_uuid
 
 
-def prepare_threads_list(threads: List[ForumThread]):
+def prepare_threads_list(threads: List[ForumThread or dict]):
     for thread in threads:
         if isinstance(thread, dict):
             thread['thread_id'] = thread['id']
@@ -26,7 +26,7 @@ def prepare_messages_list(messages: List[ForumMessage or dict]):
     return messages
 
 
-def add_thread(user_id: str, title: str, body: str):
+def add_thread(user_id: str, title: str, body: str, **kwargs):
     if forum_repository.get_user_thread_by_title(user_id, title):
         abort(409, "You already have thread with this title")
     thread = ForumThread()
@@ -47,11 +47,13 @@ def delete_thread(user_id: str, thread_id: str):
     if not thread:
         abort(make_response(jsonify(message="Thread does not exist"), 404))
     if thread.author != user_id:
-        abort(403, "You can delete only your own threads")
+        user_that_removes = user_repository.get_user_by_id(user_id)
+        if not user_that_removes or not user_that_removes.admin:
+            abort(403, "You can delete only your own threads")
     forum_repository.delete_forum_thread(thread)
 
 
-def add_message(user_id: str, related_to: str, body: str):
+def add_message(user_id: str, related_to: str, body: str, **kwargs):
     check_uuid(related_to)
     if not forum_repository.get_thread_by_id(related_to):
         abort(make_response(jsonify(message="Thread does not exist"), 404))
@@ -69,7 +71,9 @@ def delete_message(user_id: str, message_id: str):
     if not message:
         abort(make_response(jsonify(message="Message does not exist"), 404))
     if message.author != user_id:
-        abort(403, "You can delete only your own messages")
+        user_that_removes = user_repository.get_user_by_id(user_id)
+        if not user_that_removes or not user_that_removes.admin:
+            abort(403, "You can delete only your own messages")
     forum_repository.delete_thread_message(message)
 
 

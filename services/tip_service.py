@@ -1,6 +1,8 @@
 from typing import List
 
-from repositories import tip_repository
+from flask import abort
+
+from repositories import tip_repository, user_repository
 from repositories.tables import Tip
 from . import default_page_size
 
@@ -21,3 +23,21 @@ def search_tips(page: int, text_to_search: str):
     return {"tips": prepare_tips_list(
         tip_repository.search_tips(text_to_search, page, default_page_size)
     )}
+
+
+def add_tip(user_id: str, title: str, body: str, picture: str, **kwargs) -> Tip:
+    user = user_repository.get_user_by_id(user_id)
+    if not user or not (user.admin or user.change_tips):
+        abort(403, "You don't have a permission to add tips")
+    tip = Tip()
+    tip.title = title
+    tip.body = body
+    tip.picture = picture
+    return tip_repository.add_tip(tip)
+
+
+def delete_tip(user_id: str, tip_id: str) -> None:
+    user = user_repository.get_user_by_id(user_id)
+    if not user or not (user.admin or user.change_tips):
+        abort(403, "You don't have a permission to remove tips")
+    tip_repository.delete_tip_by_id(tip_id)

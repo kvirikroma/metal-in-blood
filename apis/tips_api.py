@@ -1,8 +1,10 @@
-from flask_restplus import Namespace, Resource
+from flask_restplus.namespace import Namespace
 from flask import request
 
-from models.tip_model import tip_model, fields
 from services import tip_service, check_page
+from .utils import OptionsResource
+from models.tip_model import tip_model, fields
+
 
 api = Namespace('tips', description='Tips related operations')
 
@@ -23,7 +25,7 @@ tips_list = api.model(
 
 
 @api.route('')
-class Tips(Resource):
+class Tips(OptionsResource):
     @api.doc('tips', params={'page': 'page number'})
     @api.marshal_with(tips_list, code=200)
     def get(self):
@@ -33,7 +35,7 @@ class Tips(Resource):
 
 
 @api.route('/search')
-class Tips(Resource):
+class SearchTips(OptionsResource):
     @api.doc('search_tips', params={'page': 'page number', 'text': 'text to search'})
     @api.marshal_with(tips_list, code=200)
     def get(self):

@@ -1,9 +1,10 @@
 import uuid
 
-from sqlalchemy import Column, String, DateTime, ForeignKey, UniqueConstraint, Index, Boolean, SmallInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
+from sqlalchemy import (Column, String, DateTime, ForeignKey, UniqueConstraint,
+                        Index, Boolean, SmallInteger, CheckConstraint)
 
 
 Base = declarative_base()
@@ -21,16 +22,20 @@ class User(Base):
     login = Column(String(32), nullable=False, unique=True)
     email = Column(String(256), nullable=False, unique=True)
     password_hash = Column(String(64), nullable=False)
+    language = Column(SmallInteger(), nullable=False, default=0)
 
     admin = Column(Boolean(), nullable=False, default=False)
+    change_admins = Column(Boolean(), nullable=False, default=False)
+
     change_tips = Column(Boolean(), nullable=False, default=False)
     change_news = Column(Boolean(), nullable=False, default=False)
     change_compilations = Column(Boolean(), nullable=False, default=False)
-    language = Column(SmallInteger(), nullable=False, default=0)
 
-    news_posts = relationship("NewsPost", backref='users', cascade='delete')
-    forum_threads = relationship("ForumThread", backref='users', cascade='delete')
-    forum_messages = relationship("ForumMessage", backref='users', cascade='delete')
+    users_check = CheckConstraint('admin = true OR admin = false AND change_admins = false', name='users_check')
+
+    news_posts = relationship("NewsPost", back_populates='user', cascade='delete')
+    forum_threads = relationship("ForumThread", back_populates='user', cascade='delete')
+    forum_messages = relationship("ForumMessage", back_populates='user', cascade='delete')
 
 
 class NewsPost(Base):
@@ -48,7 +53,7 @@ class NewsPost(Base):
     date = Column(DateTime(), nullable=False)
     picture = Column(String(512))
 
-    user = relationship("User", back_populates="news", foreign_keys=[author])
+    user = relationship("User", back_populates="news_posts", foreign_keys=[author])
 
     news_title_date_author_body_idx = Index('news_title_date_author_body_idx', title, date, author, body)
 
@@ -83,7 +88,8 @@ class Album(Base):
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
     author = Column(String(256), nullable=False)
     album_name = Column(String(256), nullable=False)
-    picture = Column(String(512), unique=True, nullable=False)
+    picture = Column(String(512), nullable=False)
+    link = Column(String(512), nullable=False)
     unique_index = UniqueConstraint('author', 'album_name', name='albums_author_album_name_key')
 
 
@@ -96,7 +102,7 @@ class YTCompilation(Base):
         return self.link
 
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
-    link = Column(String(256), unique=True, nullable=False)
+    link = Column(String(256), nullable=False, unique=True)
     channel = Column(String(256), nullable=False)
     video_name = Column(String(512), nullable=False)
     unique_index = UniqueConstraint('channel', 'video_name', name='yt_compilations_channel_video_name_key')
@@ -117,12 +123,10 @@ class ForumThread(Base):
     date = Column(DateTime(), nullable=False)
 
     user = relationship("User", back_populates="forum_threads", foreign_keys=[author])
-
-    threads = relationship("ForumMessage", backref='forum_threads', cascade='delete')
+    messages = relationship("ForumMessage", back_populates='thread', cascade='delete')
 
     forum_threads_author_title_key = UniqueConstraint('author', 'title', name='forum_threads_author_title_key')
     forum_threads_title_body_idx = Index('forum_threads_title_body_date_idx', title, body, date)
-    forum_messages_related_to_fkey = relationship("ForumMessage", backref='forum_threads')
 
 
 class ForumMessage(Base):
@@ -144,6 +148,6 @@ class ForumMessage(Base):
     related_to = Column(UUID(), ForeignKey('forum_threads.id', ondelete='CASCADE'), nullable=False)
 
     user = relationship("User", back_populates="forum_messages", foreign_keys=[author])
-    thread = relationship("ForumThread", back_populates="forum_messages", foreign_keys=[related_to])
+    thread = relationship("ForumThread", back_populates="messages", foreign_keys=[related_to])
 
     forum_messages_related_to_idx = Index('forum_messages_related_to_idx', related_to)

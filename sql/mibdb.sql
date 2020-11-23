@@ -39,7 +39,8 @@ CREATE TABLE public.albums (
     id uuid DEFAULT public.uuid() NOT NULL,
     author text NOT NULL,
     album_name text NOT NULL,
-    picture text NOT NULL
+    picture text NOT NULL,
+    link text NOT NULL
 );
 
 
@@ -118,7 +119,9 @@ CREATE TABLE public.users (
     change_tips boolean DEFAULT false NOT NULL,
     change_news boolean DEFAULT false NOT NULL,
     change_compilations boolean DEFAULT false NOT NULL,
-    language smallint DEFAULT 0 NOT NULL
+    language smallint DEFAULT 0 NOT NULL,
+    change_admins boolean DEFAULT false NOT NULL,
+    CONSTRAINT users_check CHECK (((admin = true) OR ((admin = false) AND (change_admins = false))))
 );
 
 
@@ -144,14 +147,6 @@ ALTER TABLE public.yt_compilations OWNER TO mib_api;
 
 ALTER TABLE ONLY public.albums
     ADD CONSTRAINT albums_author_album_name_key UNIQUE (author, album_name);
-
-
---
--- Name: albums albums_picture_key; Type: CONSTRAINT; Schema: public; Owner: mib_api
---
-
-ALTER TABLE ONLY public.albums
-    ADD CONSTRAINT albums_picture_key UNIQUE (picture);
 
 
 --

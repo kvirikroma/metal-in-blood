@@ -5,10 +5,10 @@ while [[ $PWD == *"scripts"* ]]; do
     cd ..
 done
 
-source ./.venv/bin/activate
 source ./scripts/auxiliary/prepare_launch.sh
 
 if $(password_check); then
+    source ./.venv/bin/activate
     python3 ./server.py
 fi
 

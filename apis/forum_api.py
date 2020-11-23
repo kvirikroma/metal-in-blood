@@ -1,10 +1,12 @@
-from flask_restplus import Namespace, Resource
+from flask_restplus.namespace import Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 
+from services import forum_service, check_page
+from .utils import OptionsResource
 from models.forum_model import (message_full_model, create_message_request_model,
                                 thread_full_model, create_thread_request_model, fields)
-from services import forum_service, check_page
+
 
 api = Namespace('forum', description='Forum operations')
 
@@ -50,7 +52,7 @@ threads_list = api.model(
 
 
 @api.route('/threads')
-class Threads(Resource):
+class Threads(OptionsResource):
     @api.doc('forum_threads', params={'page': 'page number'})
     @api.marshal_with(threads_list, code=200)
     def get(self):
@@ -68,7 +70,7 @@ class Threads(Resource):
         return forum_service.add_thread(get_jwt_identity(), **api.payload), 201
 
     @api.doc('delete_forum_thread', params={'id': 'thread ID'}, security='apikey')
-    @api.response(403, "Tried to remove thread of other user")
+    @api.response(403, "Non-admin tried to remove thread of other user")
     @api.response(201, "Success")
     @jwt_required
     def delete(self):
@@ -77,7 +79,7 @@ class Threads(Resource):
 
 
 @api.route('/threads/search')
-class SearchThreads(Resource):
+class SearchThreads(OptionsResource):
     @api.doc('search_forum_threads', params={'page': 'page number', 'text': 'text to search'})
     @api.marshal_with(threads_list, code=200)
     def get(self):
@@ -87,7 +89,7 @@ class SearchThreads(Resource):
 
 
 @api.route('/messages')
-class ForumMessages(Resource):
+class ForumMessages(OptionsResource):
     @api.doc('forum_messages', params={'page': 'page number', 'id': 'thread ID'})
     @api.marshal_with(messages_list, code=200)
     def get(self):
@@ -106,7 +108,7 @@ class ForumMessages(Resource):
 
     @api.doc('delete_forum_message', params={'id': 'message ID'}, security='apikey')
     @api.response(404, "Message does not exist")
-    @api.response(403, "Tried to remove message of other user")
+    @api.response(403, "Non-admin tried to remove message of other user")
     @api.response(201, "Success")
     @jwt_required
     def delete(self):
@@ -115,7 +117,7 @@ class ForumMessages(Resource):
 
 
 @api.route('/messages/search')
-class SearchForumMessages(Resource):
+class SearchForumMessages(OptionsResource):
     @api.doc('search_forum_messages', params={'page': 'page number', 'text': 'text to search', 'thread_id': 'thread ID'})
     @api.marshal_with(messages_list, code=200)
     def get(self):

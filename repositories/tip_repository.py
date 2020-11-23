@@ -17,6 +17,11 @@ def delete_tip(tip: Tip) -> None:
     database.session.commit()
 
 
+def delete_tip_by_id(tip_id: str) -> None:
+    database.session.query(Tip).filter(Tip.id == tip_id).delete()
+    database.session.commit()
+
+
 def get_tips(page: int, page_size: int) -> List[Tip]:
     return database.session.query(Tip).limit(page_size).offset(page * page_size).all()
 

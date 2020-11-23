@@ -1,14 +1,14 @@
 from datetime import datetime
-from typing import List
+from typing import List, Dict
 
 from flask import abort, jsonify, make_response
 
-from repositories import news_repository
+from repositories import news_repository, user_repository
 from repositories.tables import NewsPost
 from . import default_page_size, check_uuid
 
 
-def prepare_posts_list(posts: List[NewsPost]):
+def prepare_posts_list(posts: List[NewsPost or Dict]):
     for post in posts:
         if isinstance(post, dict):
             post['post_id'] = post['id']
@@ -29,7 +29,10 @@ def search_posts(page: int, text_to_search: str):
     )}
 
 
-def add_post(user_id: str, title: str, body: str, picture: str = None):
+def add_post(user_id: str, title: str, body: str, picture: str = None, **kwargs):
+    author = user_repository.get_user_by_id(user_id)
+    if not author or (not author.change_news and not author.admin):
+        abort(403, "You don't have permission to add posts here")
     post = NewsPost()
     post.author = user_id
     post.date = datetime.today()

@@ -2,8 +2,8 @@ from . import database
 from repositories.tables import User
 
 
-def add_user(user: User) -> User:
-    database.session.add(user)
+def add_or_edit_user(user: User) -> User:
+    database.session.merge(user)
     database.session.commit()
     return user
 
@@ -28,3 +28,8 @@ def get_user_by_login(login: str) -> User:
 
 def get_user_by_id(user_id: str) -> User:
     return database.session.query(User).filter(User.id == user_id).first()
+
+
+def edit_user(user_id: str, properties: dict) -> None:
+    database.session.query(User).filter(User.id == user_id).update(properties, synchronize_session='fetch')
+    database.session.commit()

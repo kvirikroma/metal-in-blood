@@ -20,9 +20,18 @@ album_model = {
         ),
     "picture":
         fields.String(
-            required=False,
+            required=True,
             description='Link to the picture',
             example='https://metalarea.org/images/audiocovers/2018_Aug/acov_tid309143.jpg',
+            pattern=r'\h\t\t\p\S+\/\/\S+\.\S+',
+            min_length=4,
+            max_length=512
+        ),
+    "link":
+        fields.String(
+            required=True,
+            description='Link to the album',
+            example='https://www.youtube.com/playlist?list=PLH22-xSMERQr85ReXKIyY5x3YzKrafsab',
             pattern=r'\h\t\t\p\S+\/\/\S+\.\S+',
             min_length=4,
             max_length=512
@@ -49,7 +58,7 @@ yt_compilation_model = {
         ),
     "link":
         fields.String(
-            required=False,
+            required=True,
             description='Link to the video',
             example='https://youtu.be/rPiTO36udwc',
             pattern=r'\h\t\t\p\S+\/\/\S+\.\S+',
