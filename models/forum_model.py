@@ -1,4 +1,4 @@
-from flask_restplus import fields
+from flask_restx import fields
 
 from .user_model import full_user_model
 

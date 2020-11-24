@@ -1,9 +1,10 @@
 {
     "SWAGGER_UI_DOC_EXPANSION": "list",
-    "RESTPLUS_VALIDATE": true,
+    "RESTX_VALIDATE": true,
     "SQLALCHEMY_ECHO": false,
     "SQLALCHEMY_TRACK_MODIFICATIONS": false,
-    "RESTPLUS_MASK_SWAGGER": false,
+    "RESTX_MASK_SWAGGER": false,
     "SECURITY_PASSWORD_HASH": "pbkdf2_sha512",
-    "JWT_ACCESS_TOKEN_EXPIRES": 600
+    "JWT_ACCESS_TOKEN_EXPIRES": 600,
+    "UPLOAD_FOLDER": "/var/lib/metal_in_blood/user_data/images"
 }

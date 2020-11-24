@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.postgresql import UUID
@@ -22,6 +23,7 @@ class User(Base):
     login = Column(String(32), nullable=False, unique=True)
     email = Column(String(256), nullable=False, unique=True)
     password_hash = Column(String(64), nullable=False)
+    account_picture = Column(String(512))
     language = Column(SmallInteger(), nullable=False, default=0)
 
     admin = Column(Boolean(), nullable=False, default=False)
@@ -33,6 +35,7 @@ class User(Base):
 
     users_check = CheckConstraint('admin = true OR admin = false AND change_admins = false', name='users_check')
 
+    images = relationship("Image", back_populates='user', cascade='delete')
     news_posts = relationship("NewsPost", back_populates='user', cascade='delete')
     forum_threads = relationship("ForumThread", back_populates='user', cascade='delete')
     forum_messages = relationship("ForumMessage", back_populates='user', cascade='delete')
@@ -120,7 +123,7 @@ class ForumThread(Base):
     author = Column(UUID(), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     title = Column(String(64), nullable=False)
     body = Column(String(8192), nullable=False)
-    date = Column(DateTime(), nullable=False)
+    date = Column(DateTime(), nullable=False, default=datetime.today)
 
     user = relationship("User", back_populates="forum_threads", foreign_keys=[author])
     messages = relationship("ForumMessage", back_populates='thread', cascade='delete')
@@ -144,10 +147,30 @@ class ForumMessage(Base):
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
     author = Column(UUID(), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     body = Column(String(8192), nullable=False)
-    date = Column(DateTime(), nullable=False)
+    date = Column(DateTime(), nullable=False, default=datetime.now)
     related_to = Column(UUID(), ForeignKey('forum_threads.id', ondelete='CASCADE'), nullable=False)
 
     user = relationship("User", back_populates="forum_messages", foreign_keys=[author])
     thread = relationship("ForumThread", back_populates="messages", foreign_keys=[related_to])
 
     forum_messages_related_to_idx = Index('forum_messages_related_to_idx', related_to)
+
+
+class Image(Base):
+    __tablename__ = 'images'
+
+    def __repr__(self):
+        author = self.author
+        location = self.location
+        if len(author) > 10:
+            author = author[:10] + '…'
+        if len(location) > 24:
+            location = location[:24] + '…'
+        return f"{author}'s img: {location}"
+
+    id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
+    author = Column(UUID(), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    location = Column(String(512), nullable=False)
+    upload_time = Column(DateTime(), nullable=False, default=datetime.now)
+
+    user = relationship("User", back_populates="images", foreign_keys=[author])

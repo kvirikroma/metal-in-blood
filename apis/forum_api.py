@@ -1,9 +1,10 @@
-from flask_restplus.namespace import Namespace
+from flask_restx.namespace import Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 
 from services import forum_service, check_page
 from .utils import OptionsResource
+from models import pages_count_model
 from models.forum_model import (message_full_model, create_message_request_model,
                                 thread_full_model, create_thread_request_model, fields)
 
@@ -50,11 +51,33 @@ threads_list = api.model(
     }
 )
 
+counted_messages_list = api.model(
+    'counted_list_of_thread_messages',
+    {
+        "messages":
+            fields.List(
+                fields.Nested(message)
+            ),
+        "pages_count": pages_count_model
+    }
+)
+
+counted_threads_list = api.model(
+    'counted_list_of_forum_threads',
+    {
+        "threads":
+            fields.List(
+                fields.Nested(thread)
+            ),
+        "pages_count": pages_count_model
+    }
+)
+
 
 @api.route('/threads')
 class Threads(OptionsResource):
     @api.doc('forum_threads', params={'page': 'page number'})
-    @api.marshal_with(threads_list, code=200)
+    @api.marshal_with(counted_threads_list, code=200)
     def get(self):
         """Get newest forum threads"""
         page = check_page(request)
@@ -91,7 +114,8 @@ class SearchThreads(OptionsResource):
 @api.route('/messages')
 class ForumMessages(OptionsResource):
     @api.doc('forum_messages', params={'page': 'page number', 'id': 'thread ID'})
-    @api.marshal_with(messages_list, code=200)
+    @api.marshal_with(counted_messages_list, code=200)
+    @api.response(404, "Thread not found")
     def get(self):
         """Get forum thread messages"""
         page = check_page(request)

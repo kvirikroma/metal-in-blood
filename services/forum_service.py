@@ -1,7 +1,8 @@
 from typing import List
 from datetime import datetime
+from math import ceil
 
-from flask import abort, jsonify, make_response
+from flask import abort
 
 from repositories import forum_repository, user_repository
 from repositories.tables import ForumThread, ForumMessage
@@ -45,7 +46,7 @@ def delete_thread(user_id: str, thread_id: str):
     check_uuid(thread_id)
     thread = forum_repository.get_thread_by_id(thread_id)
     if not thread:
-        abort(make_response(jsonify(message="Thread does not exist"), 404))
+        abort(404, "Thread does not exist")
     if thread.author != user_id:
         user_that_removes = user_repository.get_user_by_id(user_id)
         if not user_that_removes or not user_that_removes.admin:
@@ -56,7 +57,7 @@ def delete_thread(user_id: str, thread_id: str):
 def add_message(user_id: str, related_to: str, body: str, **kwargs):
     check_uuid(related_to)
     if not forum_repository.get_thread_by_id(related_to):
-        abort(make_response(jsonify(message="Thread does not exist"), 404))
+        abort(404, "Thread does not exist")
     message = ForumMessage()
     message.date = datetime.now()
     message.body = body
@@ -69,7 +70,7 @@ def delete_message(user_id: str, message_id: str):
     check_uuid(message_id)
     message = forum_repository.get_message_by_id(message_id)
     if not message:
-        abort(make_response(jsonify(message="Message does not exist"), 404))
+        abort(404, "Message does not exist")
     if message.author != user_id:
         user_that_removes = user_repository.get_user_by_id(user_id)
         if not user_that_removes or not user_that_removes.admin:
@@ -77,8 +78,24 @@ def delete_message(user_id: str, message_id: str):
     forum_repository.delete_thread_message(message)
 
 
+def threads_pages_count():
+    return ceil(forum_repository.get_threads_count() / default_page_size)
+
+
+def thread_messages_pages_count(thread_id: str):
+    return ceil(forum_repository.get_thread_messages_count(thread_id) / default_page_size)
+
+
 def get_threads(page: int):
-    return {"threads": forum_repository.get_newest_threads_with_info(page, default_page_size)}
+    pages_count = threads_pages_count()
+    if page <= pages_count:
+        threads = forum_repository.get_newest_threads_with_info(page, default_page_size)
+    else:
+        threads = []
+    return {
+        "threads": threads,
+        "pages_count": pages_count
+    }
 
 
 def search_threads(page: int, text_to_search: str):
@@ -89,9 +106,14 @@ def search_threads(page: int, text_to_search: str):
 
 def get_messages(page: int, thread_id: str):
     check_uuid(thread_id)
-    return {"messages": prepare_messages_list(
-        forum_repository.get_thread_messages(thread_id, page, default_page_size)
-    )}
+    pages_count = thread_messages_pages_count(thread_id)
+    if page <= pages_count:
+        messages = prepare_messages_list(forum_repository.get_thread_messages(thread_id, page, default_page_size))
+    else:
+        messages = []
+    if not messages and not forum_repository.get_thread_by_id(thread_id):
+        abort(404, "Thread does not exist")
+    return {"messages": messages}
 
 
 def search_messages(page: int, thread_id: str, text_to_search: str):

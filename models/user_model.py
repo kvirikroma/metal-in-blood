@@ -1,6 +1,6 @@
 from enum import Enum
 
-from flask_restplus import fields
+from flask_restx import fields
 
 
 class Language(Enum):
@@ -29,7 +29,7 @@ sign_up_model = {
     "password":
         fields.String(
             required=True,
-            description='User\'s password to log in',
+            description='User`s password to log in',
             example='Qwerty123',
             min_length=8,
             max_length=64
@@ -46,47 +46,55 @@ full_user_model.update({
     "user_id":
         fields.String(
             required=True,
-            description="User's unique id in database",
+            description="User`s unique id in database",
             example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
             min_length=36,
-            max_length=36,
+            max_length=36
         ),
     "admin":
         fields.Boolean(
             required=False,
             description="Is the user an administrator",
-            example=False,
+            example=False
         ),
     "change_admins":
         fields.Boolean(
             required=False,
-            description="The user's ability to change other admins' privileges",
-            example=False,
+            description="The user`s ability to change other admins' privileges",
+            example=False
         ),
     "change_tips":
         fields.Boolean(
             required=False,
-            description="The user's ability to add or remove tips",
-            example=False,
+            description="The user`s ability to add or remove tips",
+            example=False
         ),
     "change_news":
         fields.Boolean(
             required=False,
-            description="The user's ability to add or remove news posts",
-            example=False,
+            description="The user`s ability to add or remove news posts",
+            example=False
         ),
     "change_compilations":
         fields.Boolean(
             required=False,
             description="The user's ability to add or remove compilations or albums",
-            example=False,
+            example=False
         ),
     "language":
         fields.String(
             required=False,
-            description="The user's preferred language",
+            description="The user`s preferred language",
             example="en",
-            enum=[lang.name for lang in Language],
+            enum=[lang.name for lang in Language]
+        ),
+    "account_picture":
+        fields.String(
+            required=False,
+            description="The user`s account picture (avatar)",
+            example="https://www.clipartmax.com/png/middle/134-1344028_metal-by-septic-flesh-metalhead-simpson.png",
+            min_length=4,
+            max_length=512
         )
 })
 
@@ -95,13 +103,13 @@ token_model = {
         fields.String(
             required=True,
             description='Token to access resources',
-            example='qwerty',
+            example='qwerty'
         ),
     'refresh_token':
         fields.String(
             required=True,
             description='Token to refresh pair of tokens',
-            example='qwerty',
+            example='qwerty'
         ),
     "user_id":
         full_user_model["user_id"]

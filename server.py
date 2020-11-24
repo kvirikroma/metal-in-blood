@@ -5,7 +5,7 @@ from flask import Flask, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from injector import Module, singleton
 from flask_jwt_extended import JWTManager
-from flask_restplus import Api
+from flask_restx.api import Api
 from flask_injector import FlaskInjector
 from werkzeug.datastructures import Headers
 
@@ -28,15 +28,17 @@ app.config['JWT_SECRET_KEY'] = app.config['SECRET_KEY'] = os.environ.get('JWT_KE
 app.config['SQLALCHEMY_DATABASE_URI'] =\
     'postgresql+psycopg2://mib_api:' + os.environ.get("PGPASSWORD") + '@/metalinblood'
 
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+app.config["MAX_CONTENT_PATH"] = app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 5
+
 
 class AppModule(Module):
     def __init__(self, flask_app):
         self.app = flask_app
         self.db = SQLAlchemy(flask_app)
 
-    """Configure the application."""
-
     def configure(self, binder):
+        """Configure the application."""
         binder.bind(SQLAlchemy, to=self.db, scope=singleton)
         binder.bind(Api, to=api, scope=singleton)
         binder.bind(JWTManager, to=self.configure_jwt(), scope=singleton)

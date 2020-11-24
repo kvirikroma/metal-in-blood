@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 
 def custom_abort_page(message: str, code: int):
@@ -8,12 +8,18 @@ def custom_abort_page(message: str, code: int):
 def bind_error_pages(app: Flask):
     @app.errorhandler(500)
     def error500(err):
-        return custom_abort_page(err.description, 500), 500
+        if request.path.startswith("/api/v"):
+            return jsonify(message=err.description), err.code
+        return custom_abort_page(err.description, err.code), err.code
 
     @app.errorhandler(404)
     def error404(err):
-        return custom_abort_page(err.description, 404), 404
+        if request.path.startswith("/api/v"):
+            return jsonify(message=err.description), err.code
+        return custom_abort_page(err.description, err.code), err.code
 
     @app.errorhandler(400)
     def error400(err):
-        return custom_abort_page(err.description, 400), 400
+        if request.path.startswith("/api/v"):
+            return jsonify(message=err.description), err.code
+        return custom_abort_page(err.description, err.code), err.code

@@ -1,10 +1,11 @@
-from flask_restplus.namespace import Namespace
+from flask_restx.namespace import Namespace
 from flask import request
 
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from services import tip_service, check_page
 from .utils import OptionsResource
+from models import pages_count_model
 from models.tip_model import tip_model, fields
 
 
@@ -25,11 +26,22 @@ tips_list = api.model(
     }
 )
 
+counted_tips_list = api.model(
+    'counted_list_of_tips',
+    {
+        "tips":
+            fields.List(
+                fields.Nested(tip)
+            ),
+        "pages_count": pages_count_model
+    }
+)
+
 
 @api.route('')
 class Tips(OptionsResource):
     @api.doc('tips', params={'page': 'page number'})
-    @api.marshal_with(tips_list, code=200)
+    @api.marshal_with(counted_tips_list, code=200)
     def get(self):
         """Get tips"""
         page = check_page(request)

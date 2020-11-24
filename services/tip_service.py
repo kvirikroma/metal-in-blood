@@ -1,4 +1,5 @@
 from typing import List
+from math import ceil
 
 from flask import abort
 
@@ -14,9 +15,19 @@ def prepare_tips_list(tips: List[Tip]):
 
 
 def get_tips(page: int):
-    return {"tips": prepare_tips_list(
-        tip_repository.get_tips(page, default_page_size)
-    )}
+    pages_count = tips_pages_count()
+    if page <= pages_count:
+        tips = prepare_tips_list(tip_repository.get_tips(page, default_page_size))
+    else:
+        tips = []
+    return {
+        "tips": tips,
+        "pages_count": pages_count
+    }
+
+
+def tips_pages_count() -> int:
+    return ceil(tip_repository.get_tips_count() / default_page_size)
 
 
 def search_tips(page: int, text_to_search: str):

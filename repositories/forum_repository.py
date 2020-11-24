@@ -20,6 +20,10 @@ def delete_forum_thread(thread: ForumThread) -> None:
     database.session.commit()
 
 
+def get_threads_count() -> int:
+    return database.session.query(ForumThread).count()
+
+
 def search_threads(text_to_search: str, page: int, page_size: int) -> List[Dict]:
     text_to_search = "%{}%".format(text_to_search)
 
@@ -111,6 +115,10 @@ def get_thread_messages(thread_id: str, page: int, page_size: int) -> List[Dict]
         filter(ForumMessage.related_to == thread_id).order_by(ForumMessage.date.asc()).\
         limit(page_size).offset(page * page_size).all()
     return parse_raw_join_result(result)
+
+
+def get_thread_messages_count(thread_id: str) -> int:
+    return database.session.query(ForumMessage).filter(ForumMessage.related_to == thread_id).count()
 
 
 def get_message_by_id(message_id: str) -> ForumMessage:

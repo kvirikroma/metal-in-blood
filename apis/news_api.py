@@ -1,9 +1,10 @@
-from flask_restplus.namespace import Namespace
+from flask_restx.namespace import Namespace
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 
 from services import news_service, check_page
 from .utils import OptionsResource
+from models import pages_count_model
 from models.news_model import post_full_model, post_request_model, fields
 
 
@@ -29,11 +30,22 @@ post_list = api.model(
     }
 )
 
+counted_post_list = api.model(
+    'counted_list_of_posts',
+    {
+        "posts":
+            fields.List(
+                fields.Nested(get_news_post)
+            ),
+        "pages_count": pages_count_model
+    }
+)
+
 
 @api.route('')
 class Posts(OptionsResource):
     @api.doc('newest_posts', params={'page': 'page number'})
-    @api.marshal_with(post_list, code=200)
+    @api.marshal_with(counted_post_list, code=200)
     def get(self):
         """Get newest posts"""
         page = check_page(request)

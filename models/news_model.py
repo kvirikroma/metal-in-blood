@@ -1,6 +1,7 @@
-from flask_restplus import fields
+from flask_restx import fields
 
 from .user_model import full_user_model
+
 
 post_request_model = {
     "title":
@@ -50,6 +51,6 @@ post_full_model = {
             description='News post unique id in database',
             example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
             min_length=36,
-            max_length=36,
+            max_length=36
         )
 }

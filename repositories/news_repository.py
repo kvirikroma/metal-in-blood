@@ -45,5 +45,9 @@ def get_newest_posts(page: int, page_size: int) -> List[Dict]:
     return parse_raw_join_result(result)
 
 
+def get_posts_count() -> int:
+    return database.session.query(NewsPost).count()
+
+
 def get_post_by_id(post_id: str) -> NewsPost:
     return database.session.query(NewsPost).filter(NewsPost.id == post_id).first()

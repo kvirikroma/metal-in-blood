@@ -1,6 +1,5 @@
 import bcrypt
-
-from flask import abort, make_response, jsonify
+from flask import abort
 from flask_jwt_extended import create_access_token, create_refresh_token
 
 from repositories import user_repository
@@ -22,19 +21,19 @@ def check_password(password: str):
         if letters.upper().find(letter) != -1:
             check = True
             upper = True
-        if "-.?!@=".find(letter) != -1:
+        if "-.?!@=_^:;#$%&*()+\\<>~`/\"'".find(letter) != -1:
             check = True
         if letter.isdigit():
             check = True
             digit = True
         if not check:
-            abort(make_response(jsonify(message="Password cannot contain symbols like this: '" + letter + "'"), 400))
+            abort(400, f"Password cannot contain symbols like this: '{letter}'")
     if not lower:
-        abort(make_response(jsonify(message="Password must contain at least one lowercase letter"), 400))
+        abort(400, "Password must contain at least one lowercase letter")
     if not upper:
-        abort(make_response(jsonify(message="Password must contain at least one uppercase letter"), 400))
+        abort(400, "Password must contain at least one uppercase letter")
     if not digit:
-        abort(make_response(jsonify(message="Password must contain at least one digit"), 400))
+        abort(400, "Password must contain at least one digit")
 
 
 def register_user(email: str, login: str, password: str, **kwargs):
@@ -63,12 +62,14 @@ def get_token(login: str, password: str, **kwargs):
     }
 
 
-def get_user(user_id: str) -> User:
+def get_user(user_id: str) -> dict:
     check_uuid(user_id)
     user = user_repository.get_user_by_id(user_id)
     if not user:
         abort(404, "User not found")
-    return user
+    result = user.__dict__
+    result["user_id"] = user.id
+    return result
 
 
 def delete_user(own_id: str, user_id: str):
@@ -98,7 +99,7 @@ def edit_user(editor_id: str, user_id: str, **kwargs):
                 abort(422, f"Cannot find key {item} in request model")
             if changes_self and (item in {"change_tips", "change_news", "change_compilations", "change_admins", "admin"}):
                 if usr.change_admins:
-                    if item in {"change_admins", "admin"}:
+                    if item in {"change_admins", "admin"} and not kw_args[item]:
                         abort(403, f"You can not restrict your own administration abilities")
                 else:
                     abort(403, f"You can not change your own privileges")
@@ -137,5 +138,5 @@ def edit_user(editor_id: str, user_id: str, **kwargs):
         abort(404, "User not found")
     if user.admin and not user_that_edits.change_admins:
         abort(403, "You can not create, change or delete admins")
-    _edit_user_properties(user, True, **kwargs)
+    _edit_user_properties(user, False, **kwargs)
     return _update_user(user)

@@ -77,6 +77,20 @@ CREATE TABLE public.forum_threads (
 ALTER TABLE public.forum_threads OWNER TO mib_api;
 
 --
+-- Name: images; Type: TABLE; Schema: public; Owner: mib_api
+--
+
+CREATE TABLE public.images (
+    id uuid DEFAULT public.uuid() NOT NULL,
+    author uuid NOT NULL,
+    location text NOT NULL,
+    upload_time timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.images OWNER TO mib_api;
+
+--
 -- Name: news; Type: TABLE; Schema: public; Owner: mib_api
 --
 
@@ -121,6 +135,7 @@ CREATE TABLE public.users (
     change_compilations boolean DEFAULT false NOT NULL,
     language smallint DEFAULT 0 NOT NULL,
     change_admins boolean DEFAULT false NOT NULL,
+    account_picture text,
     CONSTRAINT users_check CHECK (((admin = true) OR ((admin = false) AND (change_admins = false))))
 );
 
@@ -179,6 +194,14 @@ ALTER TABLE ONLY public.forum_threads
 
 ALTER TABLE ONLY public.forum_threads
     ADD CONSTRAINT forum_threads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: images images_pkey; Type: CONSTRAINT; Schema: public; Owner: mib_api
+--
+
+ALTER TABLE ONLY public.images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
 
 
 --
@@ -303,6 +326,14 @@ ALTER TABLE ONLY public.forum_messages
 
 ALTER TABLE ONLY public.forum_threads
     ADD CONSTRAINT forum_threads_author_fkey FOREIGN KEY (author) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: images images_author_fkey; Type: FK CONSTRAINT; Schema: public; Owner: mib_api
+--
+
+ALTER TABLE ONLY public.images
+    ADD CONSTRAINT images_author_fkey FOREIGN KEY (author) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --

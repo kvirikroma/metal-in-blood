@@ -1,4 +1,4 @@
-from flask_restplus.namespace import Namespace
+from flask_restx.namespace import Namespace
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 

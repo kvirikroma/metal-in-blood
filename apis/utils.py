@@ -1,5 +1,5 @@
-from flask_restplus import Resource
-from flask_restplus.namespace import Namespace
+from flask_restx import Resource
+from flask_restx.namespace import Namespace
 
 
 api = Namespace("")

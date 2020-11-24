@@ -1,6 +1,6 @@
 from flask import request
-from flask_restplus.namespace import Namespace
-from flask_jwt_extended import (jwt_refresh_token_required, get_jwt_identity,
+from flask_restx.namespace import Namespace
+from flask_jwt_extended import (jwt_refresh_token_required, get_jwt_identity, jwt_optional,
                                 create_access_token, create_refresh_token, jwt_required)
 
 from services import user_service
@@ -85,9 +85,13 @@ class Account(OptionsResource):
     @api.doc('get_account', params={'id': 'user ID'})
     @api.response(404, "User not found")
     @api.marshal_with(user_characteristics, code=200)
+    @jwt_optional
     def get(self):
         """Get user's account info"""
-        return user_service.get_user(request.args.get("id"))
+        user_id = get_jwt_identity()
+        if not user_id:
+            user_id = request.args.get("id")
+        return user_service.get_user(user_id)
 
     edit_user_403_description = "May appear on multiple reasons:\n"\
         "1. You can not change your own privileges\n"\
