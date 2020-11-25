@@ -4,7 +4,7 @@ from flask import request
 
 from services import news_service, check_page
 from .utils import OptionsResource
-from models import pages_count_model
+from models import pages_count_model, required_query_params
 from models.news_model import post_full_model, post_request_model, fields
 
 
@@ -44,7 +44,7 @@ counted_post_list = api.model(
 
 @api.route('')
 class Posts(OptionsResource):
-    @api.doc('newest_posts', params={'page': 'page number'})
+    @api.doc('newest_posts', params=required_query_params({'page': 'page number'}))
     @api.marshal_with(counted_post_list, code=200)
     def get(self):
         """Get newest posts"""
@@ -60,7 +60,7 @@ class Posts(OptionsResource):
         """Make post in news"""
         return news_service.add_post(get_jwt_identity(), **api.payload), 201
 
-    @api.doc('delete_post', params={'post_id': 'post ID'}, security='apikey')
+    @api.doc('delete_post', params=required_query_params({'post_id': 'post ID'}), security='apikey')
     @api.response(201, "Success")
     @api.response(201, "Tried to remove post of other user")
     @jwt_required
@@ -71,7 +71,7 @@ class Posts(OptionsResource):
 
 @api.route('/search')
 class SearchPosts(OptionsResource):
-    @api.doc('search_posts', params={'page': 'page number', 'text': 'text to search'})
+    @api.doc('search_posts', params=required_query_params({'page': 'page number', 'text': 'text to search'}))
     @api.marshal_with(post_list, code=200)
     def get(self):
         """Search posts"""

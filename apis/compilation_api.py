@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from services import compilation_service, check_page
 from .utils import OptionsResource
+from models import required_query_params
 from models.compilation_model import album_model, yt_compilation_model, fields
 
 
@@ -42,7 +43,7 @@ yt_compilations_list = api.model(
 
 @api.route('/albums')
 class Albums(OptionsResource):
-    @api.doc('albums', params={'page': 'page number'})
+    @api.doc('albums', params=required_query_params({'page': 'page number'}))
     @api.marshal_with(albums_list, code=200)
     def get(self):
         """Get albums"""
@@ -58,7 +59,7 @@ class Albums(OptionsResource):
         """Add an album"""
         return compilation_service.add_album(get_jwt_identity(), **api.payload)
 
-    @api.doc('remove_album', params={'id': 'album ID'}, security='apikey')
+    @api.doc('remove_album', params=required_query_params({'id': 'album ID'}), security='apikey')
     @api.response(201, "Success")
     @api.response(403, "Don't have a permission to remove albums or compilations")
     @jwt_required
@@ -69,7 +70,7 @@ class Albums(OptionsResource):
 
 @api.route('/albums/search')
 class SearchAlbums(OptionsResource):
-    @api.doc('search_albums', params={'page': 'page number', 'text': 'text to search'})
+    @api.doc('search_albums', params=required_query_params({'page': 'page number', 'text': 'text to search'}))
     @api.marshal_with(albums_list, code=200)
     def get(self):
         """Search albums"""
@@ -79,7 +80,7 @@ class SearchAlbums(OptionsResource):
 
 @api.route('/yt')
 class Compilations(OptionsResource):
-    @api.doc('yt_compilations', params={'page': 'page number'})
+    @api.doc('yt_compilations', params=required_query_params({'page': 'page number'}))
     @api.marshal_with(yt_compilations_list, code=200)
     def get(self):
         """Get YouTube compilations"""
@@ -95,7 +96,7 @@ class Compilations(OptionsResource):
         """Add a compilation"""
         return compilation_service.add_compilation(get_jwt_identity(), **api.payload)
 
-    @api.doc('remove_compilation', params={'id': 'compilation ID'}, security='apikey')
+    @api.doc('remove_compilation', params=required_query_params({'id': 'compilation ID'}), security='apikey')
     @api.response(201, "Success")
     @api.response(403, "Don't have a permission to remove albums or compilations")
     @jwt_required
@@ -106,7 +107,7 @@ class Compilations(OptionsResource):
 
 @api.route('/yt/search')
 class SearchCompilations(OptionsResource):
-    @api.doc('search_yt_compilations', params={'page': 'page number', 'text': 'text to search'})
+    @api.doc('search_yt_compilations', params=required_query_params({'page': 'page number', 'text': 'text to search'}))
     @api.marshal_with(yt_compilations_list, code=200)
     def get(self):
         """Search YouTube compilations"""

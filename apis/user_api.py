@@ -5,6 +5,7 @@ from flask_jwt_extended import (jwt_refresh_token_required, get_jwt_identity, jw
 
 from services import user_service
 from .utils import OptionsResource
+from models import required_query_params
 from models.user_model import (sign_up_model, full_user_model, sign_in_model, token_model,
                                user_characteristics_model, user_edit_model)
 
@@ -82,7 +83,7 @@ class RefreshToken(OptionsResource):
 
 @api.route('')
 class Account(OptionsResource):
-    @api.doc('get_account', params={'id': 'user ID'})
+    @api.doc('get_account', params=required_query_params({'id': 'user ID'}))
     @api.response(404, "User not found")
     @api.marshal_with(user_characteristics, code=200)
     @jwt_optional
@@ -99,7 +100,7 @@ class Account(OptionsResource):
         "3. You can not edit some field\n"\
         "4. You don't have permission to create, change or delete admins\n"
 
-    @api.doc('edit_account', params={'id': 'user ID'}, security='apikey')
+    @api.doc('edit_account', params=required_query_params({'id': 'user ID'}), security='apikey')
     @api.response(404, "User not found")
     @api.response(403, edit_user_403_description)
     @api.response(422, "Incorrect user configuration is given")
@@ -110,7 +111,7 @@ class Account(OptionsResource):
         """Edit user's account info"""
         return user_service.edit_user(get_jwt_identity(), request.args.get("id"), **api.payload), 201
 
-    @api.doc('delete_account', params={'id': 'user ID'}, security='apikey')
+    @api.doc('delete_account', params=required_query_params({'id': 'user ID'}), security='apikey')
     @api.response(404, "User not found")
     @api.response(403, "Cannot delete this account")
     @api.marshal_with(user_characteristics, code=201)

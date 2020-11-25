@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from services import tip_service, check_page
 from .utils import OptionsResource
-from models import pages_count_model
+from models import pages_count_model, required_query_params
 from models.tip_model import tip_model, fields
 
 
@@ -40,7 +40,7 @@ counted_tips_list = api.model(
 
 @api.route('')
 class Tips(OptionsResource):
-    @api.doc('tips', params={'page': 'page number'})
+    @api.doc('tips', params=required_query_params({'page': 'page number'}))
     @api.marshal_with(counted_tips_list, code=200)
     def get(self):
         """Get tips"""
@@ -56,7 +56,7 @@ class Tips(OptionsResource):
         """Add a tip"""
         return tip_service.add_tip(get_jwt_identity(), **api.payload)
 
-    @api.doc('remove_tip', params={'id': 'tip ID'}, security='apikey')
+    @api.doc('remove_tip', params=required_query_params({'id': 'tip ID'}), security='apikey')
     @api.response(201, "Success")
     @api.response(403, "Don't have a permission to remove tips")
     @jwt_required
@@ -67,7 +67,7 @@ class Tips(OptionsResource):
 
 @api.route('/search')
 class SearchTips(OptionsResource):
-    @api.doc('search_tips', params={'page': 'page number', 'text': 'text to search'})
+    @api.doc('search_tips', params=required_query_params({'page': 'page number', 'text': 'text to search'}))
     @api.marshal_with(tips_list, code=200)
     def get(self):
         """Search tips"""

@@ -6,5 +6,5 @@
     "RESTX_MASK_SWAGGER": false,
     "SECURITY_PASSWORD_HASH": "pbkdf2_sha512",
     "JWT_ACCESS_TOKEN_EXPIRES": 600,
-    "UPLOAD_FOLDER": "/var/lib/metal_in_blood/user_data/images"
+    "UPLOAD_FOLDER": "/var/lib/metal_in_blood/user_data/"
 }

@@ -89,7 +89,7 @@ def thread_messages_pages_count(thread_id: str):
 def get_threads(page: int):
     pages_count = threads_pages_count()
     if page <= pages_count:
-        threads = forum_repository.get_newest_threads_with_info(page, default_page_size)
+        threads = prepare_threads_list(forum_repository.get_newest_threads_with_info(page, default_page_size))
     else:
         threads = []
     return {

@@ -170,7 +170,6 @@ class Image(Base):
 
     id = Column(UUID(), nullable=False, primary_key=True, default=lambda: str(uuid.uuid4()))
     author = Column(UUID(), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    location = Column(String(512), nullable=False)
     upload_time = Column(DateTime(), nullable=False, default=datetime.now)
 
     user = relationship("User", back_populates="images", foreign_keys=[author])

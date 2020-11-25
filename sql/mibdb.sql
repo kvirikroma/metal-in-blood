@@ -83,7 +83,6 @@ ALTER TABLE public.forum_threads OWNER TO mib_api;
 CREATE TABLE public.images (
     id uuid DEFAULT public.uuid() NOT NULL,
     author uuid NOT NULL,
-    location text NOT NULL,
     upload_time timestamp without time zone DEFAULT now() NOT NULL
 );
 

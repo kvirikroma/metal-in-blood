@@ -1,7 +1,7 @@
 from flask_restx import fields
 
 
-file_data_model = {
+image_data_model = {
     "image_id":
         fields.String(
             required=True,
@@ -17,15 +17,6 @@ file_data_model = {
             example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
             min_length=36,
             max_length=36
-        ),
-    "location":
-        fields.String(
-            required=True,
-            description="Link to the image",
-            example='https://youtu.be/rPiTO36udwc',
-            pattern=r'\h\t\t\p\S+\/\/\S+\.\S+',
-            min_length=4,
-            max_length=512
         ),
     "upload_time":
         fields.DateTime(

@@ -4,7 +4,7 @@ from flask import request
 
 from services import forum_service, check_page
 from .utils import OptionsResource
-from models import pages_count_model
+from models import pages_count_model, required_query_params
 from models.forum_model import (message_full_model, create_message_request_model,
                                 thread_full_model, create_thread_request_model, fields)
 
@@ -76,7 +76,7 @@ counted_threads_list = api.model(
 
 @api.route('/threads')
 class Threads(OptionsResource):
-    @api.doc('forum_threads', params={'page': 'page number'})
+    @api.doc('forum_threads', params=required_query_params({'page': 'page number'}))
     @api.marshal_with(counted_threads_list, code=200)
     def get(self):
         """Get newest forum threads"""
@@ -92,7 +92,7 @@ class Threads(OptionsResource):
         """Create forum thread"""
         return forum_service.add_thread(get_jwt_identity(), **api.payload), 201
 
-    @api.doc('delete_forum_thread', params={'id': 'thread ID'}, security='apikey')
+    @api.doc('delete_forum_thread', params=required_query_params({'id': 'thread ID'}), security='apikey')
     @api.response(403, "Non-admin tried to remove thread of other user")
     @api.response(201, "Success")
     @jwt_required
@@ -103,7 +103,7 @@ class Threads(OptionsResource):
 
 @api.route('/threads/search')
 class SearchThreads(OptionsResource):
-    @api.doc('search_forum_threads', params={'page': 'page number', 'text': 'text to search'})
+    @api.doc('search_forum_threads', params=required_query_params({'page': 'page number', 'text': 'text to search'}))
     @api.marshal_with(threads_list, code=200)
     def get(self):
         """Search forum threads"""
@@ -113,7 +113,7 @@ class SearchThreads(OptionsResource):
 
 @api.route('/messages')
 class ForumMessages(OptionsResource):
-    @api.doc('forum_messages', params={'page': 'page number', 'id': 'thread ID'})
+    @api.doc('forum_messages', params=required_query_params({'page': 'page number', 'id': 'thread ID'}))
     @api.marshal_with(counted_messages_list, code=200)
     @api.response(404, "Thread not found")
     def get(self):
@@ -130,7 +130,7 @@ class ForumMessages(OptionsResource):
         """Create message in forum thread"""
         return forum_service.add_message(get_jwt_identity(), **api.payload), 201
 
-    @api.doc('delete_forum_message', params={'id': 'message ID'}, security='apikey')
+    @api.doc('delete_forum_message', params=required_query_params({'id': 'message ID'}), security='apikey')
     @api.response(404, "Message does not exist")
     @api.response(403, "Non-admin tried to remove message of other user")
     @api.response(201, "Success")
@@ -142,7 +142,10 @@ class ForumMessages(OptionsResource):
 
 @api.route('/messages/search')
 class SearchForumMessages(OptionsResource):
-    @api.doc('search_forum_messages', params={'page': 'page number', 'text': 'text to search', 'thread_id': 'thread ID'})
+    @api.doc(
+        'search_forum_messages',
+        params=required_query_params({'page': 'page number', 'text': 'text to search', 'thread_id': 'thread ID'})
+    )
     @api.marshal_with(messages_list, code=200)
     def get(self):
         """Search messages in forum thread"""

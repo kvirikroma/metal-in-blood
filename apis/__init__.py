@@ -4,6 +4,7 @@ from flask_restx import Api
 from .user_api import api as user_api
 from .news_api import api as news_api
 from .tips_api import api as tips_api
+from .image_api import api as image_api
 from .forum_api import api as forum_api
 from .compilation_api import api as compilation_api
 
@@ -41,6 +42,7 @@ api = CustomApi(
 
 api.namespaces.clear()
 api.add_namespace(user_api)
+api.add_namespace(image_api)
 api.add_namespace(news_api)
 api.add_namespace(tips_api)
 api.add_namespace(forum_api)
