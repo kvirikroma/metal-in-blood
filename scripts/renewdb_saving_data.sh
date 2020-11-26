@@ -14,8 +14,8 @@ if $(password_check); then
     createdb -U mib_api metalinblood
     psql metalinblood -U mib_api < ./sql/mibdb.sql
 
-    pg_restore -U mib_api --data-only -d metalinblood ./sql/wkdb_data.pgdump
-    rm -f ./wkdb_data.pgdump
+    pg_restore -U mib_api --data-only -d metalinblood ./sql/mibdb_data.pgdump
+    rm -f ./mibdb_data.pgdump
 fi
 
 cd $start_pwd
