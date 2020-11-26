@@ -69,6 +69,7 @@ def get_user(user_id: str) -> dict:
         abort(404, "User not found")
     result = user.__dict__
     result["user_id"] = user.id
+    result["language"] = Language(user.language).name
     return result
 
 
@@ -117,6 +118,7 @@ def edit_user(editor_id: str, user_id: str, **kwargs):
         result = usr.__dict__
         result.update(kwargs)
         result["user_id"] = result.get("id")
+        result["language"] = Language(user.language).name
         return result
 
     check_uuid(user_id)
