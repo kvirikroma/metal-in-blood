@@ -2,8 +2,7 @@ from typing import List
 
 from sqlalchemy.sql.operators import or_
 
-from . import database
-from repositories.tables import YTCompilation, Album
+from . import database, Album, YTCompilation
 
 
 def add_album(album: Album) -> Album:

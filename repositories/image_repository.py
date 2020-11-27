@@ -4,9 +4,7 @@ from os import path, makedirs, removedirs, remove, listdir
 from flask import current_app
 from werkzeug.datastructures import FileStorage
 
-from . import database
-from repositories.tables import Image
-
+from . import database, Image
 
 IMAGE_DEFAULT_NAME = "image"
 

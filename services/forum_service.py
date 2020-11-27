@@ -4,8 +4,7 @@ from math import ceil
 
 from flask import abort
 
-from repositories import forum_repository, user_repository
-from repositories.tables import ForumThread, ForumMessage
+from repositories import forum_repository, user_repository, ForumThread, ForumMessage
 from . import default_page_size, check_uuid
 
 

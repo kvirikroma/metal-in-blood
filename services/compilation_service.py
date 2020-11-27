@@ -2,8 +2,7 @@ from typing import List
 
 from flask import abort
 
-from repositories import compilation_repository, user_repository
-from repositories.tables import Album, YTCompilation
+from repositories import compilation_repository, user_repository, Album, YTCompilation
 from . import default_page_size, check_uuid
 
 

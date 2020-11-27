@@ -4,8 +4,7 @@ from math import ceil
 
 from flask import abort
 
-from repositories import news_repository, user_repository
-from repositories.tables import NewsPost
+from repositories import news_repository, user_repository, NewsPost
 from . import default_page_size, check_uuid
 
 

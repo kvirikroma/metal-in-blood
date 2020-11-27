@@ -2,8 +2,7 @@ from typing import List, Dict
 
 from sqlalchemy.sql.operators import or_
 
-from . import database, parse_raw_join_result
-from repositories.tables import NewsPost, User
+from . import database, parse_raw_join_result, User, NewsPost
 
 
 def add_post(post: NewsPost) -> NewsPost:

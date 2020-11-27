@@ -6,8 +6,7 @@ from uuid import uuid4
 from flask import abort, Response, send_from_directory
 from werkzeug.datastructures import FileStorage
 
-from repositories import image_repository, user_repository
-from repositories.tables import Image
+from repositories import image_repository, user_repository, Image
 from . import default_page_size, check_uuid
 
 

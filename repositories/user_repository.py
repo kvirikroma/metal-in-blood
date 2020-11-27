@@ -1,5 +1,4 @@
-from . import database
-from repositories.tables import User
+from . import database, User
 
 
 def add_or_edit_user(user: User) -> User:

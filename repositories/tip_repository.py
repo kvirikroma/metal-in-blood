@@ -2,8 +2,7 @@ from typing import List
 
 from sqlalchemy.sql.operators import or_
 
-from . import database
-from repositories.tables import Tip
+from . import database, Tip
 
 
 def add_tip(tip: Tip) -> Tip:

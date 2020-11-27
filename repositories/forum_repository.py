@@ -5,8 +5,7 @@ from sqlalchemy.sql.operators import or_
 from sqlalchemy import func, distinct
 from flask import current_app
 
-from repositories.tables import ForumThread, ForumMessage, User
-from . import database, parse_raw_join_result
+from . import database, parse_raw_join_result, User, ForumThread, ForumMessage
 
 
 def add_forum_thread(thread: ForumThread) -> ForumThread:

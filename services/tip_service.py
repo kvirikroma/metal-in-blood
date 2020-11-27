@@ -3,8 +3,7 @@ from math import ceil
 
 from flask import abort
 
-from repositories import tip_repository, user_repository
-from repositories.tables import Tip
+from repositories import tip_repository, user_repository, Tip
 from . import default_page_size, check_uuid
 
 

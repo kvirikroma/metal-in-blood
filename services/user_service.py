@@ -2,8 +2,7 @@ import bcrypt
 from flask import abort
 from flask_jwt_extended import create_access_token, create_refresh_token
 
-from repositories import user_repository
-from repositories.tables import User
+from repositories import user_repository, User
 from models.user_model import user_edit_model, Language
 from . import check_uuid
 
