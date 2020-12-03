@@ -8,7 +8,7 @@ from . import check_uuid
 
 
 def check_password(password: str):
-    letters = "abcdefghijklmnopqrstuvwxyz"
+    letters = bytes(range(b'a'[0], b'z'[0]+1)).decode()
     lower = False
     upper = False
     digit = False
@@ -26,21 +26,21 @@ def check_password(password: str):
             check = True
             digit = True
         if not check:
-            abort(400, f"Password cannot contain symbols like this: '{letter}'")
+            abort(422, f"Password cannot contain symbols like this: '{letter}'")
     if not lower:
-        abort(400, "Password must contain at least one lowercase letter")
+        abort(422, "Password must contain at least one lowercase letter")
     if not upper:
-        abort(400, "Password must contain at least one uppercase letter")
+        abort(422, "Password must contain at least one uppercase letter")
     if not digit:
-        abort(400, "Password must contain at least one digit")
+        abort(422, "Password must contain at least one digit")
 
 
 def register_user(email: str, login: str, password: str, **kwargs):
+    check_password(password)
     if user_repository.get_user_by_login(login) is not None:
         abort(409, "User with this login already exists")
     if user_repository.get_user_by_email(email) is not None:
         abort(409, "User with this email already exists")
-    check_password(password)
     user = User()
     user.email = email
     user.login = login
@@ -72,12 +72,12 @@ def get_user(user_id: str) -> dict:
     return result
 
 
-def delete_user(own_id: str, user_id: str):
+def delete_user(remover_id: str, user_id: str):
     check_uuid(user_id)
-    user_that_deletes = user_repository.get_user_by_id(own_id)
+    user_that_deletes = user_repository.get_user_by_id(remover_id)
     if not user_that_deletes:
         abort(401, "Deleter (user) not found")
-    if own_id == user_id:
+    if remover_id == user_id:
         return user_repository.delete_user(user_that_deletes)
 
     if not user_that_deletes.admin:

@@ -47,6 +47,7 @@ user_edit = api.model(
 class SignUp(OptionsResource):
     @api.doc('sign_up')
     @api.response(201, "Success")
+    @api.response(422, "Incorrect password given")
     @api.response(409, "Username or email exists")
     @api.expect(sign_up, validate=True)
     def post(self):
