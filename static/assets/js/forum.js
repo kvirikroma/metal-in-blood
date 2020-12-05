@@ -60,8 +60,8 @@ items.addEventListener('click', (e) => {
 
     // console.log(e.target,current.offsetParent, current, e.target.classList)
     if(current.classList.contains('forum__item')) {
-        console.log('http://0.0.0.0:5000/' + current.getAttribute('data-href'))
-        window.location.href = 'http://0.0.0.0:5000/' + current.getAttribute('data-href');
+        console.log('/' + current.getAttribute('data-href'))
+        window.location.href = '/' + current.getAttribute('data-href');
     }
     else if(e.target.offsetParent.classList.contains('comment-del')) {
         const parent = e.target.offsetParent.offsetParent;
@@ -69,7 +69,7 @@ items.addEventListener('click', (e) => {
         const data_id = parent.getAttribute('data-id');
 
         console.log(e.target.offsetParent)
-        postData(`http://0.0.0.0:5000/api/v1/forum/threads?id=${data_id}`, {}, 'DELETE')
+        postData(`/api/v1/forum/threads?id=${data_id}`, {}, 'DELETE')
             .then((data) => {
                 console.log(data);
                 renderDefaultThread();
@@ -87,7 +87,7 @@ function addNew(title, body) {
         body
     };
 
-    postData(`http://0.0.0.0:5000/api/v1/forum/threads`, send, 'POST')
+    postData(`/api/v1/forum/threads`, send, 'POST')
         .then((data) => {
             console.log(data);
             renderDefaultThread();
@@ -98,7 +98,7 @@ function addNew(title, body) {
 }
 
 function renderDefaultThread() {
-    postData('http://0.0.0.0:5000/api/v1/forum/threads?page=1', {}, 'GET')
+    postData('/api/v1/forum/threads?page=1', {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             renderThread(data.threads);
@@ -123,7 +123,7 @@ input.addEventListener('input', function() {
 });
 
 btn.addEventListener('click', () => {
-    postData(`http://0.0.0.0:5000/api/v1/forum/threads/search?page=1&text=${input.value}`, {}, 'GET')
+    postData(`/api/v1/forum/threads/search?page=1&text=${input.value}`, {}, 'GET')
         .then((data) => {
             console.log(data);
             renderThread(data.threads)

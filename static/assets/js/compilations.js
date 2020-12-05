@@ -14,7 +14,7 @@ parent.innerHTML = null;
 
 }
 function renderDefaultAlbums() {
-    postData('http://0.0.0.0:5000/api/v1/compilations/albums?page=1', {}, 'GET')
+    postData('/api/v1/compilations/albums?page=1', {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             renderAlbums(data.albums);
@@ -47,7 +47,7 @@ const parent = document.querySelector('.comp .main__random .main__albums-content
 
 }
 function renderDefaultComp() {
-    postData('http://0.0.0.0:5000/api/v1/compilations/yt?page=1', {}, 'GET')
+    postData('/api/v1/compilations/yt?page=1', {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             renderComp(data.compilations);
@@ -73,7 +73,7 @@ input1.addEventListener('input', function() {
 });
 
 btn1.addEventListener('click', () => {
-    postData(`http://0.0.0.0:5000/api/v1/compilations/albums/search?page=1&text=${input1.value}`, {}, 'GET')
+    postData(`/api/v1/compilations/albums/search?page=1&text=${input1.value}`, {}, 'GET')
         .then((data) => {
             console.log(data);
             renderAlbums(data.albums)
@@ -96,7 +96,7 @@ input.addEventListener('input', function() {
 });
 
 btn.addEventListener('click', () => {
-    postData(`http://0.0.0.0:5000/api/v1/compilations/yt/search?page=1&text=${input.value}`, {}, 'GET')
+    postData(`/api/v1/compilations/yt/search?page=1&text=${input.value}`, {}, 'GET')
         .then((data) => {
             console.log(data);
             renderComp(data.compilations)

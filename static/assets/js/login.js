@@ -15,7 +15,7 @@ function authorization(login, password) {
             password
         }
 
-        postData('http://0.0.0.0:5000/api/v1/user/signin', info)
+        postData('/api/v1/user/signin', info)
             .then((data) => {
                 console.log(data);
 
@@ -23,7 +23,7 @@ function authorization(login, password) {
                     document.cookie = `token=${data.access_token}`;
                     document.cookie = `refreshToken=${data.refresh_token}`;
                     sessionStorage.setItem('current_user', info.login)
-                    location.href = 'http://0.0.0.0:5000/';
+                    location.href = '/';
                 } else {
                     document.cookie = `token=null`;
                     alert(data.message);
@@ -47,4 +47,4 @@ function authorization(login, password) {
     })
 })();
 
-const main_url = 'http://0.0.0.0:5000';
+const main_url = '/';

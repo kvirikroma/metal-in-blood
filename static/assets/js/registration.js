@@ -10,13 +10,13 @@ function registration(email, login, password) {
         password
     }
 
-    postData('http://0.0.0.0:5000/api/v1/user/signup', info)
+    postData('/api/v1/user/signup', info)
         .then((data) => {
             console.log(data)
 
             if (data == null) {
                 alert('Registration success'); // JSON data parsed by `response.json()` call
-                location.href = 'http://0.0.0.0:5000/signin.html';
+                location.href = '/signin.html';
             } else {
                 alert(data.message)
             }

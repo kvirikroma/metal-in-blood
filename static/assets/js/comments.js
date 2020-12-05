@@ -51,8 +51,8 @@ function renderCommets(data) {
 
 
 function renderDefaultComms() {
-	console.log(`http://0.0.0.0:5000/api/v1/forum/messages?page=${params.page}&id=${params.id}`)
-    postData(`http://0.0.0.0:5000/api/v1/forum/messages?page=${params.page}&id=${params.id}`, {}, 'GET')
+	console.log(`/api/v1/forum/messages?page=${params.page}&id=${params.id}`)
+    postData(`/api/v1/forum/messages?page=${params.page}&id=${params.id}`, {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             renderCommets(data.messages);
@@ -88,7 +88,7 @@ function renderThread(data) {
         parent.innerHTML = pattern;
 }
 function renderDefaultThread() {
-    postData('http://0.0.0.0:5000/api/v1/forum/threads?page=1', {}, 'GET')
+    postData('/api/v1/forum/threads?page=1', {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             const need = data.threads.find(el => el.thread_id == params.id)
@@ -139,7 +139,7 @@ function addNew(body) {
         related_to
     };
 
-    postData(`http://0.0.0.0:5000/api/v1/forum/messages`, send, 'POST')
+    postData(`/api/v1/forum/messages`, send, 'POST')
         .then((data) => {
             console.log(data);
             renderDefaultComms();
@@ -158,7 +158,7 @@ main__content.addEventListener('click', (e) => {
         const data_id = parent.getAttribute('data-id');
 
         console.log(parent, data_id, data_author)
-        postData(`http://0.0.0.0:5000/api/v1/forum/messages?id=${data_id}`, {}, 'DELETE')
+        postData(`/api/v1/forum/messages?id=${data_id}`, {}, 'DELETE')
             .then((data) => {
                 console.log(data);
                 renderDefaultComms();

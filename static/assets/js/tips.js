@@ -21,7 +21,7 @@ function drawTips(data) {
 }
 
 function renderDefault() {
-	postData('http://0.0.0.0:5000/api/v1/tips?page=1', {}, 'GET')
+	postData('/api/v1/tips?page=1', {}, 'GET')
               .then((data) => {
               	
                 console.log(data); // JSON data parsed by `response.json()` call
@@ -48,7 +48,7 @@ const btn = document.querySelector('.btn');
     });
 
    btn.addEventListener('click', () => {
-   	postData(`http://0.0.0.0:5000/api/v1/tips/search?page=1&text=${input.value}`, {}, 'GET')
+   	postData(`/api/v1/tips/search?page=1&text=${input.value}`, {}, 'GET')
               .then((data) => {
                 console.log(data); 
                 drawTips(data.tips)

@@ -1,4 +1,6 @@
-from flask import Blueprint, current_app
+from os import environ
+
+from flask import Blueprint, current_app, url_for
 from flask_restx import Api
 
 from .user_api import api as user_api
@@ -21,6 +23,11 @@ authorization = {
 
 
 class CustomApi(Api):
+    @property
+    def specs_url(self):
+        scheme = 'http' if environ.get("DEBUG") else 'https'
+        return url_for(self.endpoint('specs'), _external=True, _scheme=scheme)
+
     def handle_error(self, e):
         for val in current_app.error_handler_spec.values():
             for handler in val.values():

@@ -53,7 +53,7 @@ function logOut() {
 function refreshToken() {
     const ref_token = getCookie('refreshToken');
 
-    refData(`http://0.0.0.0:5000/api/v1/user/refresh`, {}, 'POST')
+    refData(`/api/v1/user/refresh`, {}, 'POST')
         .then((data) => {
             console.log(data);
             console.log('REFRESHING TOKEN  IS SUCCESS');

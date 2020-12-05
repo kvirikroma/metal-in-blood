@@ -28,7 +28,7 @@ function drawPosts(data) {
 }
 
 function renderDefault() {
-    postData('http://0.0.0.0:5000/api/v1/news?page=1', {}, 'GET')
+    postData('/api/v1/news?page=1', {}, 'GET')
         .then((data) => {
             console.log(data); // JSON data parsed by `response.json()` call
             drawPosts(data.posts);
@@ -53,7 +53,7 @@ input.addEventListener('input', function() {
 });
 
 btn.addEventListener('click', () => {
-    postData(`http://0.0.0.0:5000/api/v1/news/search?page=1&text=${input.value}`, {}, 'GET')
+    postData(`/api/v1/news/search?page=1&text=${input.value}`, {}, 'GET')
         .then((data) => {
             console.log(data);
             drawPosts(data.posts)
@@ -87,7 +87,7 @@ function addNew(title, body, picture) {
         picture
     };
 
-    postData(`http://0.0.0.0:5000/api/v1/news`, send, 'POST')
+    postData(`/api/v1/news`, send, 'POST')
         .then((data) => {
             console.log(data);
             renderDefault();
@@ -106,7 +106,7 @@ main__content.addEventListener('click', (e) => {
         const data_id = parent.getAttribute('data-id');
 
 
-        postData(`http://0.0.0.0:5000/api/v1/news?post_id=${data_id}`, {}, 'DELETE')
+        postData(`/api/v1/news?post_id=${data_id}`, {}, 'DELETE')
             .then((data) => {
                 console.log(data);
                 renderDefault();
