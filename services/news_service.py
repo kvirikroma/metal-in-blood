@@ -11,7 +11,8 @@ from . import default_page_size, check_uuid
 def prepare_posts_list(posts: List[NewsPost or Dict]) -> List[NewsPost or Dict]:
     for post in posts:
         if isinstance(post, dict):
-            post['post_id'] = post['id']
+            if not post.get('post_id'):
+                post['post_id'] = post['id']
         else:
             post.post_id = post.id
     return posts

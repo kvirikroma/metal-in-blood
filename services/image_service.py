@@ -13,7 +13,8 @@ from . import default_page_size, check_uuid
 def prepare_images_list(images: List[Image or dict]):
     for image in images:
         if isinstance(image, dict):
-            image['image_id'] = image['id']
+            if not image.get('image_id'):
+                image['image_id'] = image['id']
         else:
             image.image_id = image.id
     return images
