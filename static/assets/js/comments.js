@@ -126,7 +126,7 @@ addFormTrigger.addEventListener('click', function() {
     this.classList.toggle('active');
     addForm.classList.toggle('active');
 
-    this.classList.contains('active') ? this.textContent = 'Скрыть' : this.textContent = 'Добавить комментарий';
+    this.classList.contains('active') ? this.textContent = 'Hide' : this.textContent = 'Add comment';
 
     
 });
