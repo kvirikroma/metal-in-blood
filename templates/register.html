@@ -12,23 +12,23 @@
         <div class="mainSignIn__dialog">
             <h1 class="m-text">Metal in blood</h1>
             <form action="" id="registration">
-                <input type="text" name="login" placeholder="Login" autocomplete="off" required value="myNewLogin">
-                <input type="email" name="mail" placeholder="Email" autocomplete="off" required value="mypersonal@gmail.com">
-                <input type="password" name="pass" placeholder="Password" required value="Qwerty123">
-                <input type="password" name="repeat_pass" placeholder="Repeat password" required value="Qwerty123">
+                <input type="text" name="login" placeholder="{{ login }}" autocomplete="off" required value="">
+                <input type="email" name="mail" placeholder="{{ email }}" autocomplete="off" required value="">
+                <input type="password" name="pass" placeholder="{{ password }}" required value="">
+                <input type="password" name="repeat_pass" placeholder="{{ password_repeat }}" required value="">
                 <div class="requirements">
                     <ul>
-                        <li>Must contain:</li>
-                        <li>- lowercase</li>
+                        <li>{{ must_contain }}</li>
+                        <li>{{ lowercase }}</li>
                         <!-- <li>- uppercase</li>
                         <li>- numbers</li> -->
-                        <li>- >= 6 symbols</li>
+                        <li>{{ symbols }}</li>
 
                     </ul>
                 </div>
-                <button>Sign Up</button>
+                <button>{{ sign_up }}</button>
             </form>
-            <p>Already registered? <a href="signin.html">Login</a></p>
+            <p>{{ already }} <a href="signin.html">{{ sign_in }}</a></p>
         </div>
     </main>
     <script src="static/assets/js/data.js"></script>

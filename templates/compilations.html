@@ -21,11 +21,11 @@
 
                     <div class="main__albums">
                         <div class="tips__search search">
-                            <input type="text" name="query" placeholder="Search albums...">
-                            <button class="btn">Search</button>
+                            <input type="text" name="query" placeholder="{{ search_alb }}">
+                            <button class="btn">{{ search }}</button>
                         </div>
                         <div class="main__albums-heading">
-                            <h2>Albums</h2>
+                            {{<h2>Albums</h2>}}
                         </div>
                         <div class="main__albums-content">
                             
@@ -34,11 +34,11 @@
                     </div>
                     <div class="main__random">
                         <div class="tips__search search">
-                            <input type="text" name="query" placeholder="Search compilations...">
-                            <button class="btn">Search</button>
+                            <input type="text" name="query" placeholder="{{ search_comp }}">
+                            <button class="btn">{{ search }}</button>
                         </div>
                         <div class="main__albums-heading">
-                            <h2>Random Compilations</h2>
+                            <h2>{{ rand_comp }}</h2>
                         </div>
                         <div class="main__albums-content">
                             

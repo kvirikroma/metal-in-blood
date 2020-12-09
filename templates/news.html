@@ -15,30 +15,30 @@
                 <div class="main__logo">
                     <a href="index.html">
                         <img src="static/metal-in-blood/MiB-logo.png" alt="">
-                        <span>Home</span>
+                        <span>News</span>
                     </a>
                 </div>
                 <div class="main__content-inner">
                     <div class="tips__search search">
-                        <input type="text" name="query" placeholder="Search news...">
-                        <button class="btn">Search</button>
+                        <input type="text" name="query" placeholder="{{ search_news }}">
+                        <button class="btn">{{ search }}</button>
                     </div>
                     <div class="main__content">
                         
                     </div>
-                    <p class="add-new">Add news</p>
+                    <p class="add-new">{{ add_news }}</p>
                     <form class="add-new__form">
                         <label>
-                            <span>Heading</span> 
-                            <input type="text" name="heading" placeholder="Type heading here">
+                            <span>{{ heading }}</span> 
+                            <input type="text" name="heading" placeholder="{{ type_heading }}">
                         </label>
                         <label>
-                            <span>Picture source</span>
-                            <input type="text" name="picture" placeholder="Enter picture source here">
+                            <span>{{ pic_src }}</span>
+                            <input type="text" name="picture" placeholder="{{ news_picture }}">
                         </label>
                         
-                        <textarea name="body" placeholder="Type text here"></textarea>
-                        <button>Add post</button>
+                        <textarea name="body" placeholder="{{ type_text }}"></textarea>
+                        <button>{{ add_post }}</button>
                     </form>
                     <!-- <div class="main__search">Metal in blood</div> -->
                 </div>
