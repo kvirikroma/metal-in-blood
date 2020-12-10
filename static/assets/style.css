@@ -673,6 +673,7 @@ form input {
     border:1px solid #adff0c;
     background-color: #a1ff004d;
     border-radius: 10px; 
+    margin-top: 20px;
 }
 .add-new__form {
     display:none
