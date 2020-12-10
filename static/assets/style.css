@@ -644,6 +644,7 @@ form input {
     outline: 0;
     border:1px solid #adff0c;
     padding: 10px;
+    background-color: #a1ff004d;
     box-sizing: border-box;
 }
 .add-new__form label {
@@ -656,15 +657,22 @@ form input {
 }
 .add-new__form label input{
     width:70%;
-    color: #000;
+    color: #fff;
+    border-radius: 10px;
 }
 .add-new__form textarea{
     width:100%;
-    height: 150px
+    height: 150px;
+    color: #fff;
+    border-radius: 10px; 
 }
 .add-new__form button{
     width:100px;
     height:35px;
+    color: #fff;
+    border:1px solid #adff0c;
+    background-color: #a1ff004d;
+    border-radius: 10px; 
 }
 .add-new__form {
     display:none
