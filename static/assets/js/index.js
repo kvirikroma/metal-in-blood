@@ -6,7 +6,7 @@ function controller() { // определяем на какой странице
     localStorage.setItem('global', global_url)
     let current_url = url.slice(url.lastIndexOf('/') + 1, url.length);
     current_url = current_url.indexOf('#') == -1 ? current_url : current_url.slice(0, current_url.length - 1);
-    if (current_url !== main_url) {
+    if (current_url !== main_url || current_url !== "") {
         drawMenuButton(document.body);
         drawMenu(document.body);
         drawUser(document.body);
@@ -38,7 +38,7 @@ function drawMenu(body) {
         <div class="menu__controls">
             <div>
                 <div class="menu__controls-language"><img src="static/metal-in-blood/lang.png" alt="" class="menu-img"> Select language...</div>
-                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr">${isLogged() ? user + ', ' + '  ' + ' <a href="#" id="logout"> exit</a>' : ' <a href="signin.html">Login</a>'}</span></div>
+                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr"><a href=/profile.html>${isLogged() ? user + ', ' + '  ' + ' </a><a href="#" id="logout"> exit</a>' : ' <a href="signin.html">Login</a>'}</span></div>
             </div>
             <div class="menu__controls-arrow"><img src="static/metal-in-blood/arrows.png" alt="" class="menu-img"></div>
         </div>
