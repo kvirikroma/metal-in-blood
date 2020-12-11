@@ -30,8 +30,8 @@ function draw_profile()
     const parrent = document.querySelector('.profile .main__content');
     parrent.innerHTML = '';
     const pattern = `
-    <p><img src="${pic_src}"></p>
-    <p><span style="font-family: 'Doom-L'; font-size: 30pt">${first}</span><span style="font-family: 'Doom-R'; font-size: 30pt">${second}</span></p>
+    <p><img src="${pic_src}" width="300" height="300"></p>
+    <p><span style="font-family: 'Doom-L'; font-size: 32pt">${first}</span><span style="font-family: 'Doom-R'; font-size: 32pt">${second}</span></p>
 
     `;
     parrent.innerHTML += pattern;

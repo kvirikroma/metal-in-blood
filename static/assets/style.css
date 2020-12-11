@@ -178,6 +178,7 @@ body {
     justify-content: space-between;
     background: #222222;
     border-radius: 20px;
+    height: 150px;
 }
 .main__navigation-item__img {
     width: 30%;
