@@ -2,7 +2,7 @@ import bcrypt
 from flask import abort
 from flask_jwt_extended import create_access_token, create_refresh_token
 
-from repositories import user_repository, User
+from repositories import user_repository, User, database
 from models.user_model import user_edit_model, Language
 from . import check_uuid
 
@@ -66,7 +66,7 @@ def get_user(user_id: str) -> dict:
     user = user_repository.get_user_by_id(user_id)
     if not user:
         abort(404, "User not found")
-    result = user.__dict__
+    result = user.__dict__.copy()
     result["user_id"] = user.id
     result["language"] = Language(user.language).name
     return result
@@ -114,10 +114,11 @@ def edit_user(editor_id: str, user_id: str, **kwargs):
         user_repository.edit_user(usr.id, kw_args)
 
     def _update_user(usr: User):
-        result = usr.__dict__
+        database.session.refresh(usr)
+        result = usr.__dict__.copy()
         result.update(kwargs)
         result["user_id"] = result.get("id")
-        result["language"] = Language(user.language).name
+        result["language"] = Language(usr.language).name
         return result
 
     check_uuid(user_id)

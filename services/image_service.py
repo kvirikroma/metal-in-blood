@@ -26,7 +26,7 @@ def save_image(user_id: str, image_file: FileStorage) -> dict:
     image.upload_time = datetime.now()
     image.id = str(uuid4())
 
-    result = image_repository.add_image(image, image_file).__dict__
+    result = image_repository.add_image(image, image_file).__dict__.copy()
     result["image_id"] = image.id
     return result
 
