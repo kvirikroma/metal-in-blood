@@ -7,7 +7,21 @@
     src: url("../metal-in-blood/metal-fonts/vtks-Rude-Metal.ttf") format("truetype"); 
     font-style: normal; 
     font-weight: normal; 
-} 
+}
+
+@font-face {
+    font-family: "Doom-L"; 
+    src: url("../metal-in-blood/metal-fonts/AmazDooMLeft.ttf") format("truetype"); 
+    font-style: normal; 
+    font-weight: normal; 
+}
+
+@font-face {
+    font-family: "Doom-R"; 
+    src: url("../metal-in-blood/metal-fonts/AmazDooMRight.ttf") format("truetype"); 
+    font-style: normal; 
+    font-weight: normal; 
+}
 
 body {
     font-family: arial, sans-serif;
