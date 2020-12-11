@@ -48,6 +48,7 @@ function logOut() {
     document.cookie = 'token=null';
     document.cookie = 'refreshToken=null';
     sessionStorage.clear();
+    location.href = '/';
 }
 
 function refreshToken() {
