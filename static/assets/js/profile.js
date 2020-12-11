@@ -5,6 +5,17 @@ draw_profile();
 
 function draw_profile()
 {
+    var pic_src = "";
+    postData(`/api/v1/user?id=${user_id}`, {}, 'GET')
+    .then((data) => {
+        console.log(data);
+        pic_src += data.account_picture;
+
+    }).catch((data) => {
+        console.error(data);
+        console.trace();
+    });
+
     var first = "";
     var second = "";
     var i = 0;
@@ -19,8 +30,9 @@ function draw_profile()
     const parrent = document.querySelector('.profile .main__content');
     parrent.innerHTML = '';
     const pattern = `
-    <img>
-    <font style="font-family: 'Doom-L'; font-size: 30pt">${first}</font><font style="font-family: 'Doom-R'; font-size: 30pt">${second}</font>
+    <p><img src="${pic_src}"></p>
+    <p><span style="font-family: 'Doom-L'; font-size: 30pt">${first}</span><span style="font-family: 'Doom-R'; font-size: 30pt">${second}</span></p>
+
     `;
     parrent.innerHTML += pattern;
 }
