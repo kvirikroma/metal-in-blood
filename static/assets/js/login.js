@@ -1,6 +1,12 @@
 if (isLogged()) {
     const user = sessionStorage.getItem('current_user');
-    document.querySelector('.mainSignIn__dialog').innerHTML = `<h1>${user}, do you want <a href="#">logout</a>?</h1>`
+    document.querySelector('.mainSignIn__dialog').innerHTML = `<h1>${user}, do you want <a href="#">logout</a>?</h1>`;
+
+    document.querySelector('.mainSignIn__dialog a').addEventListener('click', e => {
+        e.preventDefault();
+        logOut();
+        location.href = '/';
+    })
 }
 
 function formatData(data) {
@@ -23,10 +29,11 @@ function authorization(login, password) {
                     document.cookie = `token=${data.access_token}`;
                     document.cookie = `refreshToken=${data.refresh_token}`;
                     sessionStorage.setItem('current_user', info.login)
+                    sessionStorage.setItem('user_id', data.user_id);
                     location.href = '/';
                 } else {
                     document.cookie = `token=null`;
-                    alert(data.message);
+                    alert(data.message);                                                                                                                                                      
                 }
                 console.log(document.cookie); // JSON data parsed by `response.json()` call
 
