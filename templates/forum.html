@@ -19,20 +19,20 @@
                     </a>
                 </div>
                 <div class="tips__search search">
-                        <input type="text" name="query" placeholder="Search threads...">
-                        <button class="btn">Search</button>
+                        <input type="text" name="query" placeholder="{{ search_trd }}">
+                        <button class="btn">{{ search }}</button>
                 </div>
-                <p class="add-new">Add thread</p>
+                <p class="add-new">{{ add_thread }}</p>
                 <form class="add-new__form">
                     <label>
-                        <span>Heading</span> 
-                        <input type="text" name="heading" placeholder="Type heading here">
+                        <span>{{ heading }}</span> 
+                        <input type="text" name="heading" placeholder="{{ type_heading }}">
                     </label>
                     <label>
-                        <span>Text</span>
-                        <input type="text" name="body" placeholder="Enter thread text here">
+                        <span>{{ text }}</span>
+                        <input type="text" name="body" placeholder="{{ thread_text }}">
                     </label>
-                    <button>Add thread</button>
+                    <button>{{ add_thread }}</button>
                 </form>
                 <div class="main__content">
                     <!-- <h1 class="main__heading">Metal in blood</h1> -->

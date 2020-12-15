@@ -1,6 +1,9 @@
 import os
 
-from flask import Flask, render_template, send_from_directory, request
+from flask import Flask, render_template, send_from_directory, redirect, request
+
+from models.user_model import Language
+from . import vocabulary
 
 
 def bind_frontend_pages(app: Flask):
@@ -11,11 +14,19 @@ def bind_frontend_pages(app: Flask):
 
     @app.route("/", methods=["GET"])
     def index():
-        return render_template("index.html")
+        return redirect("index.html")
 
     @app.route("/<string:page_name>.html", methods=["GET"])
     def page(page_name: str):
-        return render_template(page_name + ".html")
+        lang_raw = request.args.get("lang")
+        try:
+            if not lang_raw:
+                raise KeyError
+            lang = Language[lang_raw]
+        except KeyError:
+            lang = Language.en
+        print(lang)
+        return render_template(page_name + ".html", **(vocabulary.en if lang == Language.en else vocabulary.ua))
 
     @app.route('/robots.txt')
     @app.route('/sitemap.xml')

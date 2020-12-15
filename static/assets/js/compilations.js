@@ -5,8 +5,10 @@ parent.innerHTML = null;
     data.forEach(album => {
         const pattern = `
                     <div class="main__item">
-                        <div><p>${album.author} - ${album.title}</p></div>
-                         <img src="${album.picture}" alt="">
+                        <a href="${album.link}" style="color:white">
+                            <div><p>${album.author} - ${album.title}</p></div>
+                            <img src="${album.picture}" alt="">
+                        </a>
                     </div>
         `;
         parent.innerHTML += pattern;
