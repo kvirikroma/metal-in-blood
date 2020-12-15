@@ -1,0 +1,12 @@
+########## Metal In Blood robots.txt file ##########
+
+User-Agent: *
+Crawl-delay: 500
+Disallow: /api
+Allow: *.html
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+
+Host: https://metalinblood.ml
+Sitemap: https://metalinblood.ml/sitemap.xml

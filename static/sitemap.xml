@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset>
+  <url>
+    <loc>https://metalinblood.ml/</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://metalinblood.ml/index.html</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://metalinblood.ml/news.html</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://metalinblood.ml/tips.html</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://metalinblood.ml/compilations.html</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://metalinblood.ml/forum.html</loc>
+    <lastmod>2020-12-15T16:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+</urlset>
