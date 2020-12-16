@@ -11,7 +11,7 @@ function drawTips(data) {
                 <p>${post.body}</p>
             </div>
             <div class="main__content-item__img">
-                ${post.img ? ('<img src=' + post.img + ' alt="">') : ''}
+                ${post.picture ? ('<img src=' + post.picture + ' alt="">') : ''}
             </div>
         </article>
         `;

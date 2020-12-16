@@ -21,9 +21,18 @@ tip_model = {
     "tip_id":
         fields.String(
             required=True,
-            description='Tip id to request picture for it',
+            description='ID of the tip',
             example='d1d3ee42-731c-04d9-0eee-16d3e7a62948',
             min_length=36,
             max_length=36,
+        ),
+    "picture":
+        fields.String(
+            required=False,
+            description='',
+            example='https://i.imgur.com/69khNTK.jpg',
+            pattern=r'http\S+//\S+\.\S+',
+            min_length=4,
+            max_length=512
         )
 }
