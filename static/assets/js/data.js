@@ -25,6 +25,7 @@ async function postData(url = '', data = {}, method = 'POST') {
 
     }
     method == 'POST' ? config.body = JSON.stringify(data) : null; // body data type must match "Content-Type" header
+    method == 'PUT' ? config.body = JSON.stringify(data) : null;
     // Default options are marked with *
     const response = await fetch(url, config);
     console.log(response.status);

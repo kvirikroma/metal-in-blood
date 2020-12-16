@@ -119,6 +119,7 @@ function drawMenu(body) {
 function addListenerOnMenu() {
     const btn_outro = document.querySelector('.menu');
     const btn_exit = document.querySelector('.menu__controls-arrow');
+    const btn_lang = document.querySelector('.menu__controls-language');
     const menu = document.querySelector('#menu');
     [btn_outro, btn_exit].forEach(el => el.addEventListener('click', () => {
         menu.classList.toggle('active');
@@ -131,10 +132,26 @@ function addListenerOnMenu() {
             document.querySelector('#hello').remove();
         }
     }
-    
+    btn_lang.onclick = () => {
+        changeLanguage();
+    }
 }
 
-
+function changeLanguage()
+{
+    if(lang === "en")
+    {
+        const send = {language: "ua"};
+        postData(`/api/v1/user?id=${user_id}`, send, 'PUT');
+        //window.location = location.href;
+    }
+    else // lang === "ua"
+    {
+        const send = {language: "en"};
+        postData(`/api/v1/user?id=${user_id}`, send, 'PUT');
+        //window.location = location.href;
+    }
+}
 
 
 function drawUser(body) {
