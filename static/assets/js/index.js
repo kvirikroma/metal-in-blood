@@ -1,5 +1,33 @@
-// Динамическое изменение страницы
-function controller() { // определяем на какой странице находится пользователь
+const user_id = sessionStorage.getItem("user_id");
+const lang = sessionStorage.getItem("lang");
+handle_url();
+
+function handle_url()
+{
+    let url = location.href;
+    if (url.lastIndexOf('?') === -1)
+    {
+        url += `?lang=${lang}`;
+        window.location = url;
+    }
+
+    if(isLogged())
+    {
+        postData(`/api/v1/user?id=${user_id}`, {}, 'GET')
+            .then((data) => {
+                console.log(data);
+                reloadPageWithCorrectLanguage(data.language, url);
+    
+            }).catch((data) => {
+                console.error(data);
+                console.trace();
+            });
+    }
+}
+
+
+function controller() {
+
     const url = location.href;
     const main_url = 'index.html';
     const global_url = url.slice(0, url.lastIndexOf('/') + 1);
@@ -13,8 +41,20 @@ function controller() { // определяем на какой странице
         addListenerOnMenu();
     }
 }
+
+
 controller();
 
+
+function reloadPageWithCorrectLanguage(language, url) {
+
+    if(language !== lang)
+    {
+        const loc = url.slice(0, url.lastIndexOf('?')) + `?lang=${language}`;
+        sessionStorage.setItem('lang', language);
+        window.location = loc;
+    }
+}
 
 function drawMenuButton(body) {
     const btn = `
@@ -91,7 +131,7 @@ function addListenerOnMenu() {
             document.querySelector('#hello').remove();
         }
     }
-
+    
 }
 
 

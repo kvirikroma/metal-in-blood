@@ -30,6 +30,15 @@ function authorization(login, password) {
                     document.cookie = `refreshToken=${data.refresh_token}`;
                     sessionStorage.setItem('current_user', info.login)
                     sessionStorage.setItem('user_id', data.user_id);
+
+                    postData(`/api/v1/user?id=${data.user_id}`, {}, 'GET')
+                        .then((data) => {
+                            console.log(data);
+                            sessionStorage.setItem('lang', data.language);
+                        }).catch((data) => {
+                            console.error(data);
+                            console.trace();
+                        });
                     location.href = '/';
                 } else {
                     document.cookie = `token=null`;

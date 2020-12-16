@@ -1,4 +1,3 @@
-const user_id = sessionStorage.getItem("user_id");
 const name = sessionStorage.getItem("current_user");
 
 get_data();
