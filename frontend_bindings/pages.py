@@ -25,7 +25,6 @@ def bind_frontend_pages(app: Flask):
             lang = Language[lang_raw]
         except KeyError:
             lang = Language.en
-        print(lang)
         return render_template(page_name + ".html", **(vocabulary.en if lang == Language.en else vocabulary.ua))
 
     @app.route('/robots.txt')
