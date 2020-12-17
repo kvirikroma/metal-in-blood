@@ -2,7 +2,7 @@ function drawPosts(data) {
     const parent = document.querySelector('.news .main__content');
     parent.innerHTML = '';
     data.forEach(post => {
-        const pattern = `
+        let pattern = `
         <article class="main__article" data-id="${post.post_id}">
                         <div class="article__info">
                             <img src="https://img.favpng.com/12/24/4/heavy-metal-music-hard-rock-microphone-sound-png-favpng-6dhU4fDSgaHBj2VgGeQw3XK1F.jpg" alt="">
@@ -19,7 +19,7 @@ function drawPosts(data) {
                             </div>
                             <div class="article__img"><img src="${post.picture}" alt=""></div>
                         </div>
-                        <p class="del">Delete</p>
+                        <p class="del">${voc.delete}</p>
                     </article>
                    `;
         parent.innerHTML += pattern;
@@ -75,7 +75,7 @@ addFormTrigger.addEventListener('click', function() {
     this.classList.toggle('active');
     addForm.classList.toggle('active');
 
-    this.classList.contains('active') ? this.textContent = 'Hide' : this.textContent = 'Add news';
+    this.classList.contains('active') ? this.textContent = voc.hide : this.textContent = voc.add_news;
 
     
 });

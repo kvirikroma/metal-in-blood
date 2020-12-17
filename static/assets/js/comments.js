@@ -28,7 +28,7 @@ function renderCommets(data) {
                                 <div class="username">${comment.author}</div>
                                 <p class="date">${timeConverter(comment.date)}</p>
                             </div>
-                            <p class="comment-del">Delete</p>
+                            <p class="comment-del">${voc.delete}</p>
                         </div>
         `;
         parent.innerHTML += pattern;
@@ -126,7 +126,7 @@ addFormTrigger.addEventListener('click', function() {
     this.classList.toggle('active');
     addForm.classList.toggle('active');
 
-    this.classList.contains('active') ? this.textContent = 'Hide' : this.textContent = 'Add comment';
+    this.classList.contains('active') ? this.textContent = `${voc.hide}` : this.textContent = `${voc.add_comment}`;
 
     
 });

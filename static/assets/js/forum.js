@@ -11,7 +11,7 @@ addFormTrigger.addEventListener('click', function() {
     this.classList.toggle('active');
     addForm.classList.toggle('active');
 
-    this.classList.contains('active') ? this.textContent = 'Hide' : this.textContent = 'Add thread';
+    this.classList.contains('active') ? this.textContent = `${voc.hide}` : this.textContent = `${voc.add_thread}`;
 
     
 });

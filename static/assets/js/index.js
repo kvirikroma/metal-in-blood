@@ -2,12 +2,52 @@ const user_id = sessionStorage.getItem("user_id");
 const lang = sessionStorage.getItem("lang");
 handle_url();
 
+const en = {
+    exit: "exit",
+    lang: "Switch language",
+    add_thread: "Add thread",
+    add_comment: "Add comment",
+    add_news: "Add news",
+    delete: "Delete",
+    hide: "Hide"
+};
+
+const ua = {
+    exit: "вийти",
+    lang: "Змінити мову",
+    add_thread: "Додати тред",
+    add_comment: "Додати коментар",
+    add_news: "Додати новину",
+    delete: "Видалити",
+    hide: "Сховати"
+};
+
+var voc;
+
+if(lang === "en")
+{
+    voc = en;
+}
+else
+{
+    voc = ua;
+}
+
+
+
 function handle_url()
 {
     let url = location.href;
-    if (url.lastIndexOf('?') === -1)
+    if (url.indexOf("lang=") === -1)
     {
-        url += `?lang=${lang}`;
+        if(url.lastIndexOf('?') === -1)
+        {
+            url += `?lang=${lang}`;
+        }
+        else
+        {
+            url += `&lang=${lang}`;
+        }
         window.location = url;
     }
 
@@ -77,8 +117,8 @@ function drawMenu(body) {
     <div id="menu">
         <div class="menu__controls">
             <div>
-                <div class="menu__controls-language"><img src="static/metal-in-blood/lang.png" alt="" class="menu-img"> Select language...</div>
-                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr"><a href=/profile.html>${isLogged() ? user + ', ' + '  ' + ' </a><a href="#" id="logout"> exit</a>' : ' <a href="signin.html">Login</a>'}</span></div>
+                <div class="menu__controls-language"><img src="static/metal-in-blood/lang.png" alt="" class="menu-img"> ${voc.lang}</div>
+                <div class="menu__controls-login"><img src="static/metal-in-blood/exit.png" alt="" class="menu-img"><span id="wr"><a href=/profile.html>${isLogged() ? user + ', ' + '  ' + ` </a><a href="#" id="logout"> ${voc.exit}</a>` : ' <a href="signin.html">Login</a>'}</span></div>
             </div>
             <div class="menu__controls-arrow"><img src="static/metal-in-blood/arrows.png" alt="" class="menu-img"></div>
         </div>
