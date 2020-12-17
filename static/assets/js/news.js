@@ -15,7 +15,6 @@ function drawPosts(data) {
                             <div class="article__text">
                                 ${post.title ? '<h2>' + post.title + '</h2>' : null}
                                 ${post.body}
-                                <a href="#" class="read-more">Read more...</a>
                             </div>
                             <div class="article__img"><img src="${post.picture}" alt=""></div>
                         </div>
