@@ -4,6 +4,7 @@ handle_url();
 
 const en = {
     exit: "exit",
+    plang: "Preferable language",
     lang: "Switch language",
     add_thread: "Add thread",
     add_comment: "Add comment",
@@ -14,6 +15,7 @@ const en = {
 
 const ua = {
     exit: "вийти",
+    plang: "Бажана мова",
     lang: "Змінити мову",
     add_thread: "Додати тред",
     add_comment: "Додати коментар",
@@ -24,7 +26,7 @@ const ua = {
 
 var voc;
 
-if(lang === "en")
+if(lang === "en" || lang==="null")
 {
     voc = en;
 }

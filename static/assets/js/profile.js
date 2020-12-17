@@ -20,7 +20,7 @@ function draw_profile(pic_source, language)
     const pattern = `
     <div><img src="${pic_source}" width="300" height="300" style="border-radius: 150px;"></div>
     <div><span style="font-family: 'Doom-L'; font-size: 32pt">${first}</span><span style="font-family: 'Doom-R'; font-size: 32pt">${second}</span></div>
-    <div>Preferable language: ${language}</div>
+    <div>${voc.plang}: ${language}</div>
     `;
     parrent.innerHTML += pattern;
 }
