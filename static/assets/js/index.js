@@ -184,13 +184,27 @@ function changeLanguage()
     if(lang === "en")
     {
         const send = {language: "ua"};
-        postData(`/api/v1/user?id=${user_id}`, send, 'PUT');
+        postData(`/api/v1/user?id=${user_id}`, send, 'PUT').then((data) => {
+            console.log(data);
+            window.location = location.href;
+
+        }).catch((data) => {
+            console.error(data);
+            console.trace();
+        });
         //window.location = location.href;
     }
     else // lang === "ua"
     {
         const send = {language: "en"};
-        postData(`/api/v1/user?id=${user_id}`, send, 'PUT');
+        postData(`/api/v1/user?id=${user_id}`, send, 'PUT').then((data) => {
+            console.log(data);
+            window.location = location.href;
+
+        }).catch((data) => {
+            console.error(data);
+            console.trace();
+        });
         //window.location = location.href;
     }
 }
